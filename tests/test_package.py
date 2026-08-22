@@ -182,8 +182,8 @@ Render the state without new judgment.
                         expected=1,
                     )
                     self.assertIn("duplicate Decision Engineering skill authorities", blocked.stderr)
-                    self.assertIn(str(editable), blocked.stderr)
-                    self.assertIn(str(installed_skill), blocked.stderr)
+                    self.assertIn(str(editable.resolve()), blocked.stderr)
+                    self.assertIn(str(installed_skill.resolve()), blocked.stderr)
                     self.assertIn("then retry", blocked.stderr)
                 blocked_create = run(
                     sys.executable,
