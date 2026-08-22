@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "taskId": "ISSUE-6",
+  "entries": [
+    {
+      "kind": "event",
+      "id": "769dc043-af31-4a84-a5fa-5618ff9e4fbc",
+      "actor": "user",
+      "payload": {
+        "type": "task_created"
+      },
+      "createdAt": "2026-08-11T00:24:46.960Z"
+    },
+    {
+      "kind": "event",
+      "id": "d08fc427-6b0d-4312-baa5-3b7dcc8d6b11",
+      "actor": "user",
+      "payload": {
+        "type": "status_changed",
+        "from": "todo",
+        "to": "in_progress"
+      },
+      "createdAt": "2026-08-11T00:48:07.561Z"
+    },
+    {
+      "kind": "comment",
+      "id": "e6122300-6ef2-45b4-928e-da8ce9ed70e8",
+      "author": {
+        "actor": "user",
+        "agentProfileId": null,
+        "displayName": null,
+        "sessionId": null
+      },
+      "body": "@GLOSSARY.md ",
+      "attachments": [],
+      "createdAt": "2026-08-11T00:48:26.775Z",
+      "dispatchedSessionId": null,
+      "dispatchedAt": null
+    }
+  ]
+}

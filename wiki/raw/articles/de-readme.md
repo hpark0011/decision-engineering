@@ -1,63 +1,18 @@
-# Decision Engineering
+---
+source_url: null
+source_path: README.md
+title: README
+author: Hyunsol Park
+ingested: 2026-08-20
+sha256: 4646f20d4cc77f004873f9f56a8e553f278e9c7a31696c6801da162bcfc3b828
+note: Snapshot of a live workspace file. Recompute on re-ingest to detect drift.
+---
 
-Decision Engineering is an installable agent skill for keeping behavior-shaping decisions explicit, authoritative, enforceable, traceable, and correctable. Version 0.1.0 supports Claude Code, Codex, and Cursor on macOS, Linux, and Windows.
-
-## Install
-
-Choose exactly one installation relationship for a project. A managed plugin is read-only and updated by its host; the skills.sh route creates an editable project copy. Installing both creates competing instruction authorities, so ledger mutations stop until one copy is removed.
-
-### Claude Code managed plugin
-
-```bash
-claude plugin marketplace add hpark0011/decision-engineering --scope user
-claude plugin install decision-engineering@decision-engineering --scope user
-```
-
-### Codex managed plugin
-
-```bash
-codex plugin marketplace add hpark0011/decision-engineering
-codex plugin add decision-engineering@decision-engineering
-```
-
-### Cursor Agent Plugin
-
-The repository root follows Agent Plugins 1.0, which Cursor loads directly. Import `hpark0011/decision-engineering` into a Cursor team marketplace, then install Decision Engineering at user scope from Customize. For local validation before a marketplace listing, clone the repository into `~/.cursor/plugins/local/decision-engineering` and restart Cursor.
-
-### Editable project skill with skills.sh
-
-Run this from the project that should own the editable copy:
-
-```bash
-DISABLE_TELEMETRY=1 npx skills@latest add hpark0011/decision-engineering --skill decision-engineering --agent claude-code codex cursor -y
-```
-
-On Windows PowerShell:
-
-```powershell
-$env:DISABLE_TELEMETRY = "1"
-npx skills@latest add hpark0011/decision-engineering --skill decision-engineering --agent claude-code codex cursor -y
-```
-
-The environment variable disables the skills.sh install event. Decision Engineering itself performs no telemetry or network access at runtime.
-
-## First use
-
-Ask the agent to route a requirement, feature, architecture change, policy, or bug through Decision Engineering. The skill reuses an existing conforming ledger or automatically creates `./decision-ledger` at the nearest Git root, falling back to the active workspace root. A user- or project-instruction override is accepted only when it stays inside that project root.
-
-## Update and uninstall
-
-Update managed plugins through the host marketplace. For Codex, upgrade the marketplace and run `codex plugin add decision-engineering@decision-engineering` again. For an editable copy, run `npx skills update decision-engineering --project`. Uninstalling or updating the skill must never delete or rewrite the project's `decision-ledger`.
-
-## Package development
-
-`package/metadata.json` is the implementation source for generated distribution metadata. After changing it, run `python scripts/generate_manifests.py`, then `python scripts/validate_package.py`. The validation matrix runs on macOS, Linux, and Windows.
-
-Version 0.1.0 becomes releasable when package acceptance passes. Version 1.0.0 additionally requires at least 20 matched tasks showing at least 25% fewer requirement-to-code divergences without worse initial correctness.
-
-Report reproducible defects in GitHub Issues. Use GitHub Discussions for questions and field reports.
+# Create decision engineering skill
 
 ## What is it?
+
+Decision engineering
 
 Decision Engineering makes behavior-shaping decisions first-class architectural objects. It gives every decision explicit inputs, constraints, policy, ownership, consumers, and verification so systems can evolve without accumulating hidden or competing sources of meaning.
 
@@ -235,13 +190,13 @@ The way we track this is repair radius.
 ## Entire process of decision engineering
 
 1. Understand user's intent.
-2.
+2. 
 
 ## Glossary
 
 - Intent: The goal user wants to achieve with the system.
 - Decision: Steps system takes to remove the uncertainties.
--
+- 
 
 &nbsp;
 

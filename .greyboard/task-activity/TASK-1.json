@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "taskId": "TASK-1",
+  "entries": [
+    {
+      "kind": "event",
+      "id": "efe51d0e-b498-4572-a7fc-1f46fd08f29f",
+      "actor": "agent",
+      "payload": {
+        "type": "task_created"
+      },
+      "createdAt": "2026-08-22T03:49:02.623Z"
+    },
+    {
+      "kind": "event",
+      "id": "076e317b-5fa6-42f9-874e-aa1776e760db",
+      "actor": "agent",
+      "payload": {
+        "type": "status_changed",
+        "from": "todo",
+        "to": "in_progress"
+      },
+      "createdAt": "2026-08-22T03:51:45.134Z"
+    },
+    {
+      "kind": "comment",
+      "id": "3d2b887d-32a0-4a1d-8e6f-b989a177b147",
+      "author": {
+        "actor": "agent",
+        "agentProfileId": "agent_general_claude",
+        "displayName": "Claude",
+        "sessionId": "greyboard:claude:7c2e566f-7213-4128-b351-19a8d55cd9e0"
+      },
+      "body": "## Outcome: accepted locally (0.1.0 candidate), with external evidence still outstanding\n\nMost of the package was already conforming (canonical skill tree, generated manifests, guards, CI matrix, README/LICENSE/CHANGELOG). I inspected first and closed only the gaps.\n\n### Files changed → decisions\n\n| File | Change | Decisions |\n| --- | --- | --- |\n| `decision-ledger/log.md` | Unescaped the 44 `## \\[YYYY-MM-DD\\] …` headings back to the documented `## [YYYY-MM-DD] kind \\| ID \\| Title` form. This drift made `ledger_lint` fail with 39 × E214, which would have failed the CI lint step on all three runners. Textual repair only — no semantic history changed. | D031–D033, D038 |\n| `skills/decision-engineering/scripts/ledger_lint.py` | E214 now accepts `schema-change` as well as `schema-migration`, and the message says \"create/restore/schema-change\". Enforcement vocabulary now matches `SCHEMA.md`, which calls it a `schema-change`. No policy change. | D038 |\n| `skills/decision-engineering/references/ledger-schema.md` | Documented the log heading format explicitly and aligned the entry-kind wording. | D021 |\n| `scripts/validate_package.py` | Extended the local acceptance entry point to cover contract items it did not check: identity across every manifest, version agreement with `VERSION` + strict SemVer, repository/homepage URLs pointing at `hpark0011/decision-engineering`, MIT in `LICENSE` and manifests, marketplace catalogs listing exactly one `decision-engineering` plugin, Claude/Codex `skills` entries resolving to the canonical tree, Cursor standard-skills discovery, canonical payload completeness, README support routing (Issues/Discussions) + user-scoped managed install + skills.sh without `--copy`/`--global`, absence of a bespoke root installer, and the three-runner CI matrix running both the validator and ledger lint. | D019, D020, D021, D022, D023, D024, D025, D029, D030, D034, D035, D036, D037, D038 |\n| `tests/test_package.py` | Added `test_ledger_reuse_and_project_containment` (reuse of a conforming ledger, no clobbering, rejection of an out-of-project ledger path) and strengthened duplicate blocking to assert `ledger_init`/`ledger_new`/`ledger_render` all block *before* mutation and that the message names both competing copies plus the removal instruction. | D026, D027, D028, D037 |\n\nI also spot-checked the new validator negatively on a scratch copy — it correctly rejects a missing Discussions route, a reintroduced `--copy`, a duplicate `SKILL.md` authority, a broken Claude skills path, and a dropped `windows-latest` runner.\n\n### Validation run (macOS, local)\n\n| Command | Result |\n| --- | --- |\n| `python scripts/generate_manifests.py --check` | pass — projections current |\n| `python -m unittest discover -s tests -v` | pass — 3 tests, OK |\n| `python skills/decision-engineering/scripts/ledger_lint.py decision-ledger` | pass — 0 errors, 0 warnings, 39 decisions |\n| `python scripts/validate_package.py` | pass — package acceptance checks passed |\n\n### What to review / try\n\n- Skim the `decision-ledger/log.md` diff — it is a pure unescape of heading brackets, but it touches 44 lines and it is your ledger.\n- Read the new checks in `scripts/validate_package.py` and confirm they encode the acceptance contract the way you intended (they are now the thing that will block a release).\n- If you want the CI step green on push, the workflow is already configured for `ubuntu-latest` / `macos-latest` / `windows-latest`; nothing about it changed.\n\n### Still required (external — not executed, not claimed)\n\n- Native host verification: no real `claude plugin install`, `codex plugin add`, Cursor Agent Plugins load, or `npx skills add` run was performed. Manifest correctness is asserted structurally, not by the hosts' own validators.\n- CI has not run: Linux and Windows results are configuration-verified only. Only macOS was executed locally.\n- No marketplace listing, tag, release, commit, push, or remote/repo setting change was made. Nothing was published.\n- Host packaging rules were not re-verified against current primary vendor documentation this session, so the Claude `skills: \"./skills/\"` and Codex/Cursor manifest shapes remain unconfirmed against live specs.\n\n### Open decisions / follow-ups for you\n\n1. **`schema-change` vs `schema-migration`** — the bundled reference previously used one term and `SCHEMA.md` the other. I made the linter accept both rather than pick a winner. If you want a single canonical term, that is a product choice for you to make and log.\n2. **1.0.0 is not eligible** and nothing here changes that — D039 still needs the 20-matched-task benchmark evidence (≥25% fewer requirement-to-code divergences, no correctness regression).\n3. **Working tree left uncommitted** on `main` — I did not commit or branch since that was not authorized. Everything is staged-free and reviewable with `git diff` / `git status`.\n\nNo conflict between active decisions was found, and no decision record was modified.",
+      "attachments": [],
+      "createdAt": "2026-08-22T03:56:34.829Z",
+      "dispatchedSessionId": null,
+      "dispatchedAt": null
+    },
+    {
+      "kind": "event",
+      "id": "e6611e53-a92f-4c33-a63c-f8b7dd2484af",
+      "actor": "agent",
+      "payload": {
+        "type": "status_changed",
+        "from": "in_progress",
+        "to": "in_review"
+      },
+      "createdAt": "2026-08-22T03:56:42.048Z"
+    },
+    {
+      "kind": "event",
+      "id": "fb34ba5b-4add-49f0-9928-f92c2d2c7f22",
+      "actor": "user",
+      "payload": {
+        "type": "status_changed",
+        "from": "in_review",
+        "to": "done"
+      },
+      "createdAt": "2026-08-22T04:58:57.384Z"
+    }
+  ]
+}

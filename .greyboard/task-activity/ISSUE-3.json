@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "taskId": "ISSUE-3",
+  "entries": [
+    {
+      "kind": "event",
+      "id": "f030fa2e-c09a-4644-87a0-0dff8b572162",
+      "actor": "user",
+      "payload": {
+        "type": "task_created"
+      },
+      "createdAt": "2026-08-10T23:39:42.555Z"
+    },
+    {
+      "kind": "comment",
+      "id": "4a5fc2d4-d095-4885-83b3-676ef6d1fd33",
+      "author": {
+        "actor": "user",
+        "agentProfileId": null,
+        "displayName": null,
+        "sessionId": null
+      },
+      "body": "@skills/write-decision-ledger/ledger-template.md is created",
+      "attachments": [],
+      "createdAt": "2026-08-10T23:40:03.138Z",
+      "dispatchedSessionId": null,
+      "dispatchedAt": null
+    },
+    {
+      "kind": "event",
+      "id": "eea2e9fe-5643-4053-9330-8cdce3d0f2ac",
+      "actor": "user",
+      "payload": {
+        "type": "status_changed",
+        "from": "todo",
+        "to": "in_progress"
+      },
+      "createdAt": "2026-08-10T23:50:09.561Z"
+    },
+    {
+      "kind": "event",
+      "id": "dca7a67c-05ce-4717-aeb5-e606195d2a56",
+      "actor": "user",
+      "payload": {
+        "type": "status_changed",
+        "from": "in_progress",
+        "to": "todo"
+      },
+      "createdAt": "2026-08-10T23:50:15.328Z"
+    },
+    {
+      "kind": "event",
+      "id": "efe33161-cc39-459e-903f-a717d4741c15",
+      "actor": "user",
+      "payload": {
+        "type": "status_changed",
+        "from": "todo",
+        "to": "done"
+      },
+      "createdAt": "2026-08-10T23:50:57.199Z"
+    }
+  ]
+}

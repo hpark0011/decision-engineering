@@ -1,0 +1,31 @@
+{
+  "name": "decision-engineering",
+  "version": "0.1.0",
+  "description": "Keep system intent explicit, authoritative, enforceable, traceable, and correctable with a Markdown decision ledger.",
+  "author": {
+    "name": "hpark0011",
+    "url": "https://github.com/hpark0011"
+  },
+  "homepage": "https://github.com/hpark0011/decision-engineering#readme",
+  "repository": "https://github.com/hpark0011/decision-engineering",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "decision-engineering",
+    "decision-ledger",
+    "software-architecture"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Decision Engineering",
+    "shortDescription": "Maintain authoritative decision ledgers.",
+    "longDescription": "Route requirements to explicit decisions, trace authoritative facts, and validate intent against behavior.",
+    "developerName": "hpark0011",
+    "category": "Productivity",
+    "capabilities": [
+      "Local",
+      "Write"
+    ],
+    "defaultPrompt": "Use Decision Engineering to route this requirement through the decision ledger."
+  }
+}

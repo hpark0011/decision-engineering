@@ -1,0 +1,29 @@
+{
+  "name": "decision-engineering",
+  "owner": {
+    "name": "hpark0011",
+    "url": "https://github.com/hpark0011"
+  },
+  "metadata": {
+    "description": "Keep system intent explicit, authoritative, enforceable, traceable, and correctable with a Markdown decision ledger.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "decision-engineering",
+      "description": "Keep system intent explicit, authoritative, enforceable, traceable, and correctable with a Markdown decision ledger.",
+      "author": {
+        "name": "hpark0011",
+        "url": "https://github.com/hpark0011"
+      },
+      "homepage": "https://github.com/hpark0011/decision-engineering#readme",
+      "tags": [
+        "agent-skills",
+        "decision-engineering",
+        "decision-ledger",
+        "software-architecture"
+      ],
+      "source": "./"
+    }
+  ]
+}

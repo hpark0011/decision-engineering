@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "taskId": "ISSUE-2",
+  "entries": [
+    {
+      "kind": "event",
+      "id": "d1729ebc-00c9-4dce-b961-14ac2be07b04",
+      "actor": "user",
+      "payload": {
+        "type": "task_created"
+      },
+      "createdAt": "2026-08-10T05:07:08.324Z"
+    },
+    {
+      "kind": "event",
+      "id": "1253456d-4ed3-456f-b9cf-a3e588576bc8",
+      "actor": "user",
+      "payload": {
+        "type": "subtask_added",
+        "subtaskId": "ISSUE-3",
+        "subtaskTitle": "Create a decision ledger template",
+        "source": "created",
+        "fromParentId": null
+      },
+      "createdAt": "2026-08-10T23:39:42.555Z"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "taskId": "ISSUE-1",
+  "entries": [
+    {
+      "kind": "event",
+      "id": "4acbc6ee-b303-4535-b2d8-af0fa92b3a26",
+      "actor": "user",
+      "payload": {
+        "type": "task_created"
+      },
+      "createdAt": "2026-08-10T04:23:06.380Z"
+    },
+    {
+      "kind": "comment",
+      "id": "59cfb69f-00e1-4af6-9ded-1ff11f68a54c",
+      "author": {
+        "actor": "user",
+        "agentProfileId": null,
+        "displayName": null,
+        "sessionId": null
+      },
+      "body": "Decision template created in @skills/write-decision-ledger/ledger-template.md ",
+      "attachments": [],
+      "createdAt": "2026-08-10T04:37:21.780Z",
+      "dispatchedSessionId": null,
+      "dispatchedAt": null
+    },
+    {
+      "kind": "event",
+      "id": "dc186d05-9b8a-421e-8a71-8deef2273ee9",
+      "actor": "user",
+      "payload": {
+        "type": "status_changed",
+        "from": "todo",
+        "to": "in_progress"
+      },
+      "createdAt": "2026-08-10T04:59:19.710Z"
+    },
+    {
+      "kind": "event",
+      "id": "5e612fe5-c3e1-446b-89a7-567aefd169ec",
+      "actor": "user",
+      "payload": {
+        "type": "status_changed",
+        "from": "in_progress",
+        "to": "done"
+      },
+      "createdAt": "2026-08-10T04:59:22.534Z"
+    }
+  ]
+}

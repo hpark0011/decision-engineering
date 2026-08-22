@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "taskId": "ISSUE-5",
+  "entries": [
+    {
+      "kind": "event",
+      "id": "0c83f63e-02ab-4e06-8d7e-baf89ba9c551",
+      "actor": "user",
+      "payload": {
+        "type": "task_created"
+      },
+      "createdAt": "2026-08-11T00:13:42.373Z"
+    }
+  ]
+}

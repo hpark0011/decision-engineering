@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decision Engineering"
+  short_description: "Build and maintain correctable decision ledgers"
+  default_prompt: "Use $decision-engineering to route this requirement through the decision ledger and validate the result."
