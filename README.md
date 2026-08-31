@@ -1,45 +1,36 @@
 # Decision Engineering
 
-Decision Engineering is an installable agent skill for keeping behavior-shaping decisions explicit, authoritative, enforceable, traceable, and correctable. Version 0.1.0 supports Claude Code, Codex, and Cursor on macOS, Linux, and Windows.
+Decision Engineering is an installable agent skill for keeping behavior-shaping decisions explicit, authoritative, enforceable, traceable, and correctable.
 
-## Install
+## Installation
 
-Choose exactly one installation relationship for a project. A managed plugin is read-only and updated by its host; the skills.sh route creates an editable project copy. Installing both creates competing instruction authorities, so ledger mutations stop until one copy is removed.
+Choose one installation method. If you use multiple method, you would have multiple copies of skills.
 
-### Claude Code managed plugin
+### 1. Claude Code managed plugin
 
 ```bash
 claude plugin marketplace add hpark0011/decision-engineering --scope user
 claude plugin install decision-engineering@decision-engineering --scope user
 ```
 
-### Codex managed plugin
+### 2. Codex managed plugin
 
 ```bash
 codex plugin marketplace add hpark0011/decision-engineering
 codex plugin add decision-engineering@decision-engineering
 ```
 
-### Cursor Agent Plugin
+### 3. Cursor Agent Plugin
 
 The repository root follows Agent Plugins 1.0, which Cursor loads directly. Import `hpark0011/decision-engineering` into a Cursor team marketplace, then install Decision Engineering at user scope from Customize. For local validation before a marketplace listing, clone the repository into `~/.cursor/plugins/local/decision-engineering` and restart Cursor.
 
-### Editable project skill with skills.sh
+### 4. Editable skill with [skills.sh](http://skills.sh)
 
-Run this from the project that should own the editable copy:
+[skills.sh](https://skills.sh) is a tool for adding agent skills to your project. It copies the skill files into your project so you can review and customize them.
 
 ```bash
-DISABLE_TELEMETRY=1 npx skills@latest add hpark0011/decision-engineering --skill decision-engineering --agent claude-code codex cursor -y
+npx skills@latest add hpark0011/decision-engineering
 ```
-
-On Windows PowerShell:
-
-```powershell
-$env:DISABLE_TELEMETRY = "1"
-npx skills@latest add hpark0011/decision-engineering --skill decision-engineering --agent claude-code codex cursor -y
-```
-
-The environment variable disables the skills.sh install event. Decision Engineering itself performs no telemetry or network access at runtime.
 
 ## First use
 
@@ -235,13 +226,13 @@ The way we track this is repair radius.
 ## Entire process of decision engineering
 
 1. Understand user's intent.
-2.
+2. 
 
 ## Glossary
 
 - Intent: The goal user wants to achieve with the system.
 - Decision: Steps system takes to remove the uncertainties.
--
+- 
 
 &nbsp;
 
