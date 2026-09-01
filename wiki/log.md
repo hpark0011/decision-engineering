@@ -55,6 +55,7 @@
 - Updated: `concepts/decision-ledger.md` with asynchronous, event-triggered delta extraction as a proposed conversational write path
 - Updated: `index.md` (16 pages; added comparison and transcript source)
 - Key distinction captured: Hermes compounds reusable procedures and skills; Decision Engineering compounds durable decisions and reasoning—why, authoritative facts, dependencies, and what to revisit when facts change
+
 ## \[2026-08-21\] ingest | Agent skill distribution — mattpocock/skills + compound-engineering-plugin
 
 - Sources: `raw/articles/mattpocock-skills-readme.md` (sha256 4079d981…d4f6), `raw/articles/mattpocock-skills-adr-0002-claude-code-plugin.md` (sha256 c8f8f946…d949d), `raw/articles/compound-engineering-plugin-readme.md` (sha256 002ff5d3…6ca30)
@@ -67,3 +68,14 @@
 - Constraint recorded: Claude's `plugin.json` takes `skills` as an array of explicit paths; Codex takes a single path string and recursively discovers `SKILL.md`, and drops symlinks on install. Manifest format therefore constrains repo layout.
 - Hazard recorded: CE's retired Bun installer wrote a managed block into the user's global `~/.codex/AGENTS.md` containing a line that broke subagent dispatch; the README still carries a removal prompt. Argument against owning a bespoke installer.
 - Framework connection: per-host `plugin.json` is a projection of the authoritative `skills/` dir, and Pocock's ADR encodes the completeness rule as an explicit invariant. The ADR is a decision entry with dependency edges written without the vocabulary.
+
+## \[2026-08-24\] query | How Hermes memory works
+
+- Answered from current official Nous Research documentation plus [[hermes-vs-decision-engineering]].
+- Not filed: concise factual lookup, not a substantial synthesis.
+- Correction to the existing low-confidence framing: built-in memory is bounded `MEMORY.md` + `USER.md` injected as a frozen session-start snapshot; full session history is separately searchable through SQLite FTS5, and one optional external memory provider can augment the built-in stores.
+
+## \[2026-08-24\] query | What belongs in Hermes MEMORY.md
+
+- Answered as a follow-up factual lookup; not filed.
+- Clarified that `MEMORY.md` holds compact, durable, actionable environment and workflow facts, while user identity/preferences belong in `USER.md`, project authority belongs in context files, and transient or rediscoverable material stays out.

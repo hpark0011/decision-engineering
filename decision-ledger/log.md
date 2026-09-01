@@ -2,7 +2,7 @@
 
 Append semantic creates, edits, renames, supersessions, retirements, restorations, deletions, and schema changes. Use Git for textual history.
 
-## [2026-08-20] create | D001 | Determine intent authority
+## \[2026-08-20\] create | D001 | Determine intent authority
 
 Reason: The framework needs one durable authority for intended behavior.
 
@@ -15,7 +15,7 @@ Affected:
 - `framework.intent-authority`
 - D003, D008, framework maintainers, and implementation reviewers
 
-## [2026-08-20] create | D002 | Determine behavior authority
+## \[2026-08-20\] create | D002 | Determine behavior authority
 
 Reason: The framework must distinguish intended behavior from evidence of actual behavior.
 
@@ -28,7 +28,7 @@ Affected:
 - `framework.behavior-authority`
 - D003, D012, diagnostics, and implementation review
 
-## [2026-08-20] create | D003 | Resolve intent behavior divergence
+## \[2026-08-20\] create | D003 | Resolve intent behavior divergence
 
 Reason: Intent-behavior mismatches require explicit normative adjudication.
 
@@ -41,7 +41,7 @@ Affected:
 - `framework.divergence-resolution`
 - D008, ledger maintenance, and implementation repair
 
-## [2026-08-20] create | D004 | Determine decision atomicity
+## \[2026-08-20\] create | D004 | Determine decision atomicity
 
 Reason: Each uncertainty needs one independently correctable owner.
 
@@ -54,7 +54,7 @@ Affected:
 - `framework.decision-atomicity`
 - D005, D006, D012, D013, record authors, and lint review
 
-## [2026-08-20] create | D005 | Determine fact authority
+## \[2026-08-20\] create | D005 | Determine fact authority
 
 Reason: Every consumed fact needs one deterministic correction site.
 
@@ -67,7 +67,7 @@ Affected:
 - `framework.fact-authority`
 - D006, D008, D009, D010, D014, and graph validation
 
-## [2026-08-20] create | D006 | Determine decision record contract
+## \[2026-08-20\] create | D006 | Determine decision record contract
 
 Reason: Humans, agents, and tools need one compatible record shape.
 
@@ -80,7 +80,7 @@ Affected:
 - `framework.record-validity`
 - D007, D017, decision authors, `ledger_new.py`, and `ledger_lint.py`
 
-## [2026-08-20] create | D007 | Determine ledger storage model
+## \[2026-08-20\] create | D007 | Determine ledger storage model
 
 Reason: The framework needs one navigable and taxonomy-stable ledger layout per system.
 
@@ -93,7 +93,7 @@ Affected:
 - `framework.ledger-storage-model`
 - D014, D015, D018, initialization, and maintenance tooling
 
-## [2026-08-20] create | D008 | Route framework changes
+## \[2026-08-20\] create | D008 | Route framework changes
 
 Reason: Maintenance must reuse existing ownership and create authority only for new uncertainty.
 
@@ -106,7 +106,7 @@ Affected:
 - `framework.change-route`
 - D018, the Decision Engineering workflow, and change review
 
-## [2026-08-20] create | D009 | Determine projection eligibility
+## \[2026-08-20\] create | D009 | Determine projection eligibility
 
 Reason: Consumer representations must not become hidden policy owners.
 
@@ -119,7 +119,7 @@ Affected:
 - `framework.projection-eligibility`
 - D010, projection designers, and decision reviewers
 
-## [2026-08-20] create | D010 | Determine consumer fact access
+## \[2026-08-20\] create | D010 | Determine consumer fact access
 
 Reason: Consumers must reuse authoritative answers instead of reconstructing them.
 
@@ -132,7 +132,7 @@ Affected:
 - `framework.consumer-access`
 - Cross-domain integrations and implementation review
 
-## [2026-08-20] create | D011 | Determine enforcement boundary
+## \[2026-08-20\] create | D011 | Determine enforcement boundary
 
 Reason: Framework invariants need boundaries that cannot be bypassed by another consumer.
 
@@ -145,7 +145,7 @@ Affected:
 - `framework.enforcement-sufficiency`
 - D012, decision authors, and implementation reviewers
 
-## [2026-08-20] create | D012 | Determine verification target
+## \[2026-08-20\] create | D012 | Determine verification target
 
 Reason: Verification must test the authoritative path without duplicating policy.
 
@@ -158,7 +158,7 @@ Affected:
 - `framework.verification-sufficiency`
 - D017, test authors, and release review
 
-## [2026-08-20] create | D013 | Determine domain membership
+## \[2026-08-20\] create | D013 | Determine domain membership
 
 Reason: Domain boundaries should localize change and correction rather than mirror implementation layers.
 
@@ -171,7 +171,7 @@ Affected:
 - `framework.domain-membership`
 - D014, generated views, routing, and impact analysis
 
-## [2026-08-20] create | D014 | Validate dependency graph
+## \[2026-08-20\] create | D014 | Validate dependency graph
 
 Reason: Ownership and downstream impact require a resolvable acyclic fact-decision graph.
 
@@ -184,7 +184,7 @@ Affected:
 - `framework.graph-validity`
 - D017, D018, rendering, lint, and impact analysis
 
-## [2026-08-20] create | D015 | Determine decision identity
+## \[2026-08-20\] create | D015 | Determine decision identity
 
 Reason: Decision references must survive rename, regrouping, and lifecycle changes.
 
@@ -197,7 +197,7 @@ Affected:
 - `framework.decision-identity`
 - D016, filenames, references, logs, specifications, tests, and commits
 
-## [2026-08-20] create | D016 | Determine semantic logging
+## \[2026-08-20\] create | D016 | Determine semantic logging
 
 Reason: Git line history does not explain why the decision model changed or its impact.
 
@@ -210,7 +210,7 @@ Affected:
 - `framework.semantic-log-obligation`
 - D017, `log.md`, lifecycle review, and impact review
 
-## [2026-08-20] create | D017 | Determine ledger acceptance
+## \[2026-08-20\] create | D017 | Determine ledger acceptance
 
 Reason: Maintainers need one explicit gate for structural, generated, and normative completeness.
 
@@ -223,7 +223,7 @@ Affected:
 - `framework.ledger-acceptance`
 - Completion reporting, implementation planning, and adoption review
 
-## [2026-08-20] create | D018 | Determine ledger lookup scope
+## \[2026-08-20\] create | D018 | Determine ledger lookup scope
 
 Reason: Maintainers need a bounded path from a request to authoritative decision records.
 
@@ -236,7 +236,7 @@ Affected:
 - `framework.lookup-scope`
 - Decision Engineering maintainers, D008 route evidence, review, and reconciliation
 
-## [2026-08-20] schema-change | decision records | Move identity metadata to YAML frontmatter
+## \[2026-08-20\] schema-change | decision records | Move identity metadata to YAML frontmatter
 
 Reason: Decision identity and routing metadata were duplicated between the filename, H1, and body, producing redundant rendered documents and weakening machine-readable metadata.
 
@@ -255,7 +255,7 @@ Affected:
 - `generated/graph.mmd`
 - Decision authoring, linting, rendering, and Obsidian presentation
 
-## [2026-08-21] create | D019 | Determine package identity
+## \[2026-08-21\] create | D019 | Determine package identity
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -267,7 +267,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D020 | Determine canonical skill source
+## \[2026-08-21\] create | D020 | Determine canonical skill source
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -279,7 +279,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D021 | Determine packaged skill contents
+## \[2026-08-21\] create | D021 | Determine packaged skill contents
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -291,7 +291,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D022 | Determine Claude Code distribution
+## \[2026-08-21\] create | D022 | Determine Claude Code distribution
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -303,7 +303,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D023 | Determine Codex distribution
+## \[2026-08-21\] create | D023 | Determine Codex distribution
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -315,7 +315,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D024 | Determine Cursor distribution
+## \[2026-08-21\] create | D024 | Determine Cursor distribution
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -327,7 +327,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D025 | Determine editable project installation
+## \[2026-08-21\] create | D025 | Determine editable project installation
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -339,7 +339,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D026 | Prevent duplicate skill authority
+## \[2026-08-21\] create | D026 | Prevent duplicate skill authority
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -351,7 +351,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D027 | Determine ledger location
+## \[2026-08-21\] create | D027 | Determine ledger location
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -363,7 +363,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D028 | Initialize a missing ledger
+## \[2026-08-21\] create | D028 | Initialize a missing ledger
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -375,7 +375,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D029 | Determine release versioning
+## \[2026-08-21\] create | D029 | Determine release versioning
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -387,7 +387,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D030 | Generate distribution metadata
+## \[2026-08-21\] create | D030 | Generate distribution metadata
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -399,7 +399,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D031 | Determine macOS support
+## \[2026-08-21\] create | D031 | Determine macOS support
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -411,7 +411,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D032 | Determine Linux support
+## \[2026-08-21\] create | D032 | Determine Linux support
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -423,7 +423,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D033 | Determine Windows support
+## \[2026-08-21\] create | D033 | Determine Windows support
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -435,7 +435,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D034 | Determine public release source
+## \[2026-08-21\] create | D034 | Determine public release source
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -447,7 +447,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D035 | Determine package licensing
+## \[2026-08-21\] create | D035 | Determine package licensing
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -459,7 +459,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D036 | Determine support channels
+## \[2026-08-21\] create | D036 | Determine support channels
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -471,7 +471,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D037 | Constrain packaged execution
+## \[2026-08-21\] create | D037 | Constrain packaged execution
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -483,7 +483,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D038 | Determine package acceptance
+## \[2026-08-21\] create | D038 | Determine package acceptance
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -495,7 +495,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] create | D039 | Determine release maturity gate
+## \[2026-08-21\] create | D039 | Determine release maturity gate
 
 Reason: The package requirement introduced a new authoritative question that the existing framework decisions do not resolve.
 
@@ -507,7 +507,7 @@ Affected:
 
 - Package manifests, installation documentation, release validation, and downstream packaging decisions that consume this fact.
 
-## [2026-08-21] edit | D030 | Generate distribution metadata
+## \[2026-08-21\] edit | D030 | Generate distribution metadata
 
 Reason: Official Claude Code and Codex GitHub installation flows require repository marketplace catalogs in addition to plugin manifests.
 
@@ -521,7 +521,7 @@ Affected:
 - `.agents/plugins/marketplace.json`
 - GitHub installation commands, metadata generation, and package acceptance
 
-## [2026-08-21] edit | D026-D028, D030-D033, D037-D038 | Bind package enforcement
+## \[2026-08-21\] edit | D026-D028, D030-D033, D037-D038 | Bind package enforcement
 
 Reason: The package implementation now provides concrete mutation, metadata, platform, execution, and acceptance boundaries for previously recorded obligations.
 
@@ -538,7 +538,7 @@ Affected:
 - `package.distribution-metadata`, platform support facts, `package.execution-boundary`, and `package.acceptance`
 - Packaged scripts, tests, CI, and release readiness
 
-## [2026-08-21] edit | D025 | Determine editable project installation
+## \[2026-08-21\] edit | D025 | Determine editable project installation
 
 Reason: An exact skills.sh installation showed that `--copy` creates independently editable host trees, violating the single-authority invariant.
 
@@ -551,7 +551,7 @@ Affected:
 - `package.editable-installation`
 - README installation commands, duplicate detection, and lifecycle acceptance
 
-## [2026-08-21] schema-change | D006 | Require decision recency metadata
+## \[2026-08-21\] schema-change | D006 | Require decision recency metadata
 
 Reason: Every decision record needs visible recency metadata so maintainers and agents can tell when its semantics were last updated.
 
