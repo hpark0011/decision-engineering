@@ -3,7 +3,6 @@ status: active
 domain: lifecycle
 id: D029
 title: "Determine release versioning"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -20,14 +19,7 @@ How is the package version assigned and advanced?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.release-version`
-- Meaning: The authoritative versioning contract for every package projection.
-- Shape: Semantic Versioning with initial version `0.1.0`
-- Atomicity: One release has one version across every manifest and tag.
-
-## Invariant
+## Invariants
 
 All generated metadata and release tags agree on one strict semantic version.
 
@@ -35,15 +27,16 @@ All generated metadata and release tags agree on one strict semantic version.
 
 Begin at `0.1.0`; use major, minor, and patch increments according to Semantic Versioning.
 
+## Output fact
+
+- Name: `package.release-version`
+- Meaning: The authoritative versioning contract for every package artifact.
+- Shape: Semantic Versioning with initial version `0.1.0`
+- Atomicity: One release has one version across every manifest and tag.
+
 ## Enforcement
 
 Release validation must reject malformed or divergent version values.
-
-## Projection
-
-`package.release-version.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

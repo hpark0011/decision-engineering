@@ -3,7 +3,6 @@ status: active
 domain: topology
 id: D014
 title: "Validate dependency graph"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -28,6 +27,14 @@ Is the current ledger dependency graph structurally valid?
   - Kind: root
   - Authority: Candidate decision records under review
 
+## Invariants
+
+The graph is bipartite from authorities to facts to decisions to facts, has at most one producer per fact, resolves every reference, and contains no same-evaluation decision cycle.
+
+## Policy
+
+Return `valid` only when every input resolves, every derived producer agrees, root authorities are consistent, output names are unique, supersession links resolve, and dependency traversal finds no synchronous cycle; model temporal feedback as an explicit persisted or previous-period root fact.
+
 ## Output fact
 
 - Name: `framework.graph-validity`
@@ -35,23 +42,9 @@ Is the current ledger dependency graph structurally valid?
 - Shape: `{ state: valid | invalid, reason: string }`
 - Atomicity: `reason` explains one graph-validity result and cannot vary without changing or misrepresenting it.
 
-## Invariant
-
-The graph is bipartite from authorities to facts to decisions to facts, has at most one producer per fact, resolves every reference, and contains no same-evaluation decision cycle.
-
-## Policy
-
-Return `valid` only when every input resolves, every derived producer agrees, root authorities are consistent, output and projection names are unique, supersession links resolve, and dependency traversal finds no synchronous cycle; model temporal feedback as an explicit persisted or previous-period root fact.
-
 ## Enforcement
 
-`ledger_lint.py` must reject every invalid graph before projections are rendered or a ledger change is accepted.
-
-## Projection
-
-`framework.graph-validity.public`
-
-Exposes graph validity and structural diagnostics; the Mermaid graph may change representation but never become authoritative.
+`ledger_lint.py` must reject every invalid graph before generated artifacts are rendered or a ledger change is accepted.
 
 ## Consumers
 

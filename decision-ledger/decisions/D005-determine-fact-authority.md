@@ -3,7 +3,6 @@ status: active
 domain: modeling
 id: D005
 title: "Determine fact authority"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ Is a candidate fact declaration authoritatively owned?
   - Kind: derived
   - Produced by: D004
 
-## Output fact
-
-- Name: `framework.fact-authority`
-- Meaning: Whether one candidate fact has exactly one valid authority for its kind.
-- Shape: `{ state: valid | invalid, reason: string }`
-- Atomicity: `reason` explains the validity state of the same fact declaration and cannot vary independently.
-
-## Invariant
+## Invariants
 
 Every root fact has exactly one external authority or observation boundary, and every derived fact has exactly one producing decision.
 
@@ -37,21 +29,22 @@ Every root fact has exactly one external authority or observation boundary, and 
 
 Return `valid` for a root fact only when it names one external authority, and for a derived fact only when it names the one decision that produces the identical stable fact; return `invalid` for absent, ambiguous, duplicated, paraphrased, or conflicting ownership.
 
+## Output fact
+
+- Name: `framework.fact-authority`
+- Meaning: Whether one candidate fact has exactly one valid authority for its kind.
+- Shape: `{ state: valid | invalid, reason: string }`
+- Atomicity: `reason` explains the validity state of the same fact declaration and cannot vary independently.
+
 ## Enforcement
 
 `ledger_lint.py` and ledger review must reject unresolved producers, missing root authorities, inconsistent authorities, duplicate outputs, and fact references that reconstruct another fact under a new name.
-
-## Projection
-
-`framework.fact-authority.public`
-
-Exposes the validity state and reason for the candidate declaration without assigning a different authority.
 
 ## Consumers
 
 - D006 — Determine decision record contract
 - D008 — Route framework changes
-- D009 — Determine projection eligibility
+- D009 — Determine consumer representation treatment
 - D010 — Determine consumer fact access
 - D014 — Validate dependency graph
 

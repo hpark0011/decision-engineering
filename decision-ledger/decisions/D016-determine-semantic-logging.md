@@ -3,7 +3,6 @@ status: active
 domain: lifecycle
 id: D016
 title: "Determine semantic logging"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,6 +21,14 @@ Does a proposed ledger change require a semantic log entry?
   - Kind: root
   - Authority: Maintainer proposing the ledger change
 
+## Invariants
+
+Every accepted semantic create, edit, rename, supersede, retire, restore, delete, or schema change remains attributable by stable ID with reason, changed meaning, and downstream impact.
+
+## Policy
+
+Return `required` when the delta changes ownership, meaning, dependencies, policy, invariants, output, enforcement, consumers, verification, lifecycle, or schema; return `not-required` only for wording or formatting that leaves the decision model unchanged.
+
 ## Output fact
 
 - Name: `framework.semantic-log-obligation`
@@ -29,23 +36,9 @@ Does a proposed ledger change require a semantic log entry?
 - Shape: `{ state: required | not-required, reason: string }`
 - Atomicity: `reason` explains the obligation for the same delta and cannot vary independently.
 
-## Invariant
-
-Every accepted semantic create, edit, rename, supersede, retire, restore, delete, or schema change remains attributable by stable ID with reason, changed meaning, and downstream impact.
-
-## Policy
-
-Return `required` when the delta changes ownership, meaning, dependencies, policy, invariant, enforcement, projection, consumers, verification, lifecycle, or schema; return `not-required` only for wording or formatting that leaves the decision model unchanged.
-
 ## Enforcement
 
 Ledger review must reject a semantic change without an appended `log.md` entry; `ledger_lint.py` must reject a decision with no create, restore, or migration history.
-
-## Projection
-
-`framework.semantic-log-obligation.public`
-
-Exposes whether logging is required and why, without replacing the append-only log entry.
 
 ## Consumers
 

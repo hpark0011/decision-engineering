@@ -3,7 +3,6 @@ status: active
 domain: authority
 id: D002
 title: "Determine behavior authority"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -19,14 +18,7 @@ Which artifact is authoritative for actual system behavior?
   - Kind: root
   - Authority: IDEA.md — Code and runtime behavior
 
-## Output fact
-
-- Name: `framework.behavior-authority`
-- Meaning: The evidence class that authoritatively establishes actual behavior.
-- Shape: `implementation-and-runtime`
-- Atomicity: The answer identifies one behavior authority and contains no separate policy choice.
-
-## Invariant
+## Invariants
 
 Recorded intent is never presented as proof that the system currently behaves that way.
 
@@ -34,15 +26,16 @@ Recorded intent is never presented as proof that the system currently behaves th
 
 Treat executable implementation and runtime observations as authoritative for actual behavior; use tests and traces as evidence about that behavior, not as substitutes for observing the authoritative path.
 
+## Output fact
+
+- Name: `framework.behavior-authority`
+- Meaning: The evidence class that authoritatively establishes actual behavior.
+- Shape: `implementation-and-runtime`
+- Atomicity: The answer identifies one behavior authority and contains no separate policy choice.
+
 ## Enforcement
 
 The diagnostic and reconciliation workflow must inspect the relevant implementation or runtime boundary before claiming what the system does.
-
-## Projection
-
-`framework.behavior-authority.public`
-
-Names implementation and runtime evidence as the behavior authority without interpreting whether the behavior is correct.
 
 ## Consumers
 

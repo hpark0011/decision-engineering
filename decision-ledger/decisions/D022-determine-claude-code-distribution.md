@@ -3,7 +3,6 @@ status: active
 domain: distribution
 id: D022
 title: "Determine Claude Code distribution"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -25,14 +24,7 @@ How is the canonical skill distributed to Claude Code?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.claude-code-distribution`
-- Meaning: The complete host contract by which Claude Code loads and scopes the package.
-- Shape: `{ supported: true, format: claude-plugin, manifest: .claude-plugin/plugin.json, scope: user }`
-- Atomicity: Format, manifest, and scope jointly identify one deployable Claude Code channel.
-
-## Invariant
+## Invariants
 
 Claude Code loads the canonical skill as a user-scoped managed plugin without an editable project copy.
 
@@ -40,15 +32,16 @@ Claude Code loads the canonical skill as a user-scoped managed plugin without an
 
 Publish a Claude native manifest pointing at `./skills/` and document user scope as the default managed installation.
 
+## Output fact
+
+- Name: `package.claude-code-distribution`
+- Meaning: The complete host contract by which Claude Code loads and scopes the package.
+- Shape: `{ supported: true, format: claude-plugin, manifest: .claude-plugin/plugin.json, scope: user }`
+- Atomicity: Format, manifest, and scope jointly identify one deployable Claude Code channel.
+
 ## Enforcement
 
 Claude package validation must reject an invalid manifest, missing skill, or non-user default instruction.
-
-## Projection
-
-`package.claude-code-distribution.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

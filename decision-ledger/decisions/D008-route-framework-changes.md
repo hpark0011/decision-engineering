@@ -3,7 +3,6 @@ status: active
 domain: operations
 id: D008
 title: "Route framework changes"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -25,6 +24,14 @@ Which ledger operation class applies to the current framework request?
   - Kind: derived
   - Produced by: D005
 
+## Invariants
+
+No request creates a second decision for an output fact or question that already has an authoritative owner.
+
+## Policy
+
+Choose `consume` when an existing output fact already answers the request, `edit` when the owning decision's semantics must change, `create` only for a new question and output fact, and `reconcile` for an observed intent-behavior mismatch governed by D003.
+
 ## Output fact
 
 - Name: `framework.change-route`
@@ -32,23 +39,9 @@ Which ledger operation class applies to the current framework request?
 - Shape: `consume | edit | create | reconcile`
 - Atomicity: One request receives one mutually exclusive route before ledger or implementation editing begins.
 
-## Invariant
-
-No request creates a second decision for an output fact or question that already has an authoritative owner.
-
-## Policy
-
-Choose `consume` when an existing output or projection already answers the request, `edit` when the owning decision's semantics must change, `create` only for a new question and output fact, and `reconcile` for an observed intent-behavior mismatch governed by D003.
-
 ## Enforcement
 
 The Decision Engineering maintenance workflow must state the route and governing decision ID or newly allocated ID before changing ledger or behavior.
-
-## Projection
-
-`framework.change-route.public`
-
-Exposes the selected route and links to separately resolved governing IDs without changing the classification.
 
 ## Consumers
 

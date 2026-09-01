@@ -3,7 +3,6 @@ status: active
 domain: compatibility
 id: D032
 title: "Determine Linux support"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -23,14 +22,7 @@ Is Linux an actively verified package platform?
   - Kind: derived
   - Produced by: D021
 
-## Output fact
-
-- Name: `package.linux-support`
-- Meaning: Whether Linux belongs to the supported compatibility contract.
-- Shape: `supported`
-- Atomicity: Platform support is one independently testable proposition.
-
-## Invariant
+## Invariants
 
 Every shipped Python workflow must pass on a current supported Linux runner.
 
@@ -38,15 +30,16 @@ Every shipped Python workflow must pass on a current supported Linux runner.
 
 Declare Linux supported only while platform acceptance tests pass.
 
+## Output fact
+
+- Name: `package.linux-support`
+- Meaning: Whether Linux belongs to the supported compatibility contract.
+- Shape: `supported`
+- Atomicity: Platform support is one independently testable proposition.
+
 ## Enforcement
 
 The `ubuntu-latest` job in `.github/workflows/validate.yml` must pass `scripts/validate_package.py` and ledger lint before release.
-
-## Projection
-
-`package.linux-support.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

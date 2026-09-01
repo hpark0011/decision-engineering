@@ -6,29 +6,31 @@ Use this schema for ledgers initialized by this skill. If a repository already h
 
 1. [Ledger directory](#ledger-directory)
 2. [Decision record](#decision-record)
-3. [Fact references](#fact-references)
-4. [Lifecycle](#lifecycle)
-5. [Generated projections](#generated-projections)
-6. [Lint rules](#lint-rules)
+3. [Domain](#domain)
+4. [Fact references](#fact-references)
+5. [Consumers](#consumers)
+6. [Lifecycle](#lifecycle)
+7. [Generated artifacts](#generated-artifacts)
+8. [Lint rules](#lint-rules)
 
 ## Ledger directory
 
 ```text
 decision-ledger/
 ├── SCHEMA.md                 authoritative maintenance constitution
-├── index.md                  generated routing projection
+├── index.md                  generated routing view
 ├── log.md                    append-only semantic history
 ├── decisions/                authoritative flat decision records
 │   └── D001-determine-x.md
 └── generated/
-    └── graph.mmd              generated dependency projection
+    └── graph.mmd              generated dependency view
 ```
 
 Keep active decision files physically flat. Put changing domain groupings in metadata, the index, and the graph so stable identities do not depend on taxonomy.
 
 ## Decision record
 
-Use the headings exactly once and in this order:
+Use only these headings, exactly once and in this order:
 
 ```markdown
 ---
@@ -36,7 +38,6 @@ status: active
 domain: example
 id: D001
 title: "Determine example"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -56,6 +57,14 @@ What exact uncertainty does the system resolve?
   - Kind: derived
   - Produced by: D000
 
+## Invariants
+
+- State what must never become false while the output is accepted as valid.
+
+## Policy
+
+State the rule mapping input facts to the output fact.
+
 ## Output fact
 
 - Name: `example.answer`
@@ -63,23 +72,9 @@ What exact uncertainty does the system resolve?
 - Shape: `{ state: allowed | blocked, reason: string }`
 - Atomicity: `reason` explains `state` and cannot vary independently.
 
-## Invariant
-
-State what must never become false while the output is accepted as valid.
-
-## Policy
-
-State the rule mapping input facts to the output fact.
-
 ## Enforcement
 
 Name the boundary that can reject or commit the action. Before code exists, state an obligation rather than inventing a symbol.
-
-## Projection
-
-`example.answer.public`
-
-Describe allowed renaming, omission, or explanation. Introduce no judgment.
 
 ## Consumers
 
@@ -93,9 +88,15 @@ Describe allowed renaming, omission, or explanation. Introduce no judgment.
 - Prove the boundary rejects every invalid result or transition.
 ```
 
-Require the five frontmatter fields `status`, `domain`, `id`, `title`, and `updated_at`. Treat them as the single authoritative location for decision identity, lifecycle, routing, and recency metadata. Store `updated_at` as `YYYY-MM-DD` and refresh it on every semantic decision edit. Do not repeat them in an H1 or body line; begin the body with `## Requirement`.
+Require the four frontmatter fields `status`, `domain`, `id`, and `title`. Treat them as the single authoritative location for decision identity, lifecycle, and routing metadata. Use `log.md` and version-control history for recency rather than duplicating an update date in each record. Do not repeat frontmatter metadata in an H1 or body line; begin the body with `## Requirement`.
 
-Use a stable `D` ID with at least three digits. Keep the ID unchanged when the title or filename changes. Derive the filename as `{id}-{slug(title)}.md` and lint it against frontmatter. Use lowercase dot-separated fact and projection names. Use `active`, `superseded`, or `retired` status.
+Use a stable `D` ID with at least three digits. Keep the ID unchanged when the title or filename changes. Derive the filename as `{id}-{slug(title)}.md` and lint it against frontmatter. Use lowercase dot-separated fact names. Use `active`, `superseded`, or `retired` status.
+
+## Domain
+
+A domain is the smallest authoritative consistency boundary responsible for a group of decisions and their output facts. A decision may read facts from other domains, but it produces only its own declared output fact. No domain may directly write facts owned by another domain; cross-domain use occurs through authoritative output facts.
+
+Store the domain's stable name in frontmatter for routing and impact analysis. Keep decision files physically flat so changing a domain assignment does not change a decision's identity.
 
 ## Fact references
 
@@ -110,6 +111,12 @@ Treat a fact as the smallest authoritative proposition that can change independe
 
 Split a structured output if a field can change independently, can be correct while another is wrong, can serve a consumer independently, or needs a different policy, invariant, or verification.
 
+## Consumers
+
+List every known UI, API, worker, agent, report, or downstream decision that reads the output fact. Consumers must use the authoritative output fact and must not reconstruct the policy from input facts.
+
+A consumer may format, rename, omit, or transport the output as an implementation detail. Record a useful implementation binding beneath that consumer when traceability requires it. If producing the consumer-facing value requires new judgment, classification, defaulting, or policy, create another decision with its own output fact.
+
 ## Lifecycle
 
 For `superseded` records, add optional lifecycle metadata to frontmatter:
@@ -122,9 +129,9 @@ Require the successor to exist. Keep superseded and retired records for historic
 
 Append semantic changes to `log.md`. Write each entry heading as `## [YYYY-MM-DD] <kind> | <ID> | <Title>`. Require every decision to have at least one `create`, `restore`, or `schema-change` entry that mentions its ID. Use Git for line history and the ledger log for meaning and impact.
 
-## Generated projections
+## Generated artifacts
 
-Generate `index.md` from decision records. Route primarily by output fact; include ID, question, inputs, projection, domain, and status. Store no unique policy text there.
+Generate `index.md` from decision records. Route primarily by output fact; include ID, question, inputs, domain, and status. Store no unique policy text there.
 
 Generate `generated/graph.mmd` as a bipartite graph:
 
@@ -138,10 +145,10 @@ Allow a fact many consumers but at most one producer. Reject same-evaluation dep
 
 The bundled linter checks mechanically:
 
-- required frontmatter, ISO-date `updated_at`, required files, headings, heading order, IDs, filenames, statuses, and non-placeholder content;
+- required frontmatter, required files, allowed headings, heading order, IDs, filenames, statuses, and non-placeholder content;
 - absence of repeated status, domain, ID, title, or H1 metadata in the body;
-- exactly one output fact, projection, invariant, policy, enforcement obligation, and verification list per decision;
-- output and projection uniqueness;
+- exactly one output fact, invariants section, policy, enforcement obligation, consumers section, and verification list per decision;
+- output uniqueness;
 - root authority consistency;
 - derived fact and producer resolution;
 - no self-input and no synchronous decision dependency cycle;
@@ -149,4 +156,4 @@ The bundled linter checks mechanically:
 - create-history presence in `log.md`;
 - exact agreement between generated `index.md` and decision records.
 
-The linter cannot prove that prose expresses the correct policy, output atomicity is well judged, a projection contains no hidden judgment, consumers do not recreate logic in code, or bindings resolve to real code. Review those as explicit human/agent obligations.
+The linter cannot prove that prose expresses the correct policy, output atomicity is well judged, consumers do not recreate logic in code, or bindings resolve to real code. Review those as explicit human/agent obligations.

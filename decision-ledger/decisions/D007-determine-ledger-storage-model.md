@@ -3,7 +3,6 @@ status: active
 domain: ledger
 id: D007
 title: "Determine ledger storage model"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ Which storage model governs one system's decision ledger?
   - Kind: root
   - Authority: IDEA.md — Why this works
 
-## Output fact
-
-- Name: `framework.ledger-storage-model`
-- Meaning: The canonical physical and authority model for one system ledger.
-- Shape: `schema-constrained-markdown-directory`
-- Atomicity: The value names one storage contract consumed as a whole by maintainers and ledger tools.
-
-## Invariant
+## Invariants
 
 One system has one ledger; authoritative decision files remain flat and stable while navigation, graphs, and domain groupings remain derived.
 
@@ -37,15 +29,16 @@ One system has one ledger; authoritative decision files remain flat and stable w
 
 Store one root `decision-ledger/` directory containing authoritative `SCHEMA.md` and flat `decisions/*.md`, append-only `log.md`, and generated `index.md` and `generated/graph.mmd`; never create a competing ledger for the same system.
 
+## Output fact
+
+- Name: `framework.ledger-storage-model`
+- Meaning: The canonical physical and authority model for one system ledger.
+- Shape: `schema-constrained-markdown-directory`
+- Atomicity: The value names one storage contract consumed as a whole by maintainers and ledger tools.
+
 ## Enforcement
 
 `ledger_init.py` must preserve an existing valid ledger and refuse to overwrite a conflicting non-empty directory; maintenance review must reject competing ledger roots or decision subdirectories.
-
-## Projection
-
-`framework.ledger-storage-model.public`
-
-Shows the directory tree and authority labels without moving records or adding policy.
 
 ## Consumers
 

@@ -3,7 +3,6 @@ status: active
 domain: operations
 id: D018
 title: "Determine ledger lookup scope"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -28,14 +27,7 @@ Which existing decision records should be opened for the current maintenance req
   - Kind: derived
   - Produced by: D014
 
-## Output fact
-
-- Name: `framework.lookup-scope`
-- Meaning: The smallest ordered set of authoritative decision IDs that can route and trace the current request.
-- Shape: `ordered list of D-prefixed decision IDs`
-- Atomicity: The list is one lookup answer for one query and is consumed as a complete candidate scope.
-
-## Invariant
+## Invariants
 
 Lookup starts from generated routing information but resolves every selected result to authoritative decision files before policy is used.
 
@@ -43,15 +35,16 @@ Lookup starts from generated routing information but resolves every selected res
 
 Search `index.md` by output fact, question, requirement terms, input fact, consumer, and domain; open the smallest candidate set, follow fact dependencies only as needed, and search all decision files only when the generated index cannot route the query.
 
+## Output fact
+
+- Name: `framework.lookup-scope`
+- Meaning: The smallest ordered set of authoritative decision IDs that can route and trace the current request.
+- Shape: `ordered list of D-prefixed decision IDs`
+- Atomicity: The list is one lookup answer for one query and is consumed as a complete candidate scope.
+
 ## Enforcement
 
 The Decision Engineering maintenance workflow must read `SCHEMA.md` and `index.md` first, then restrict initial decision reads to this result unless the index demonstrably fails to route the request.
-
-## Projection
-
-`framework.lookup-scope.public`
-
-Exposes selected IDs, titles, and links in lookup order without copying their policy text.
 
 ## Consumers
 

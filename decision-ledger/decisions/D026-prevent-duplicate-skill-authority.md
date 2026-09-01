@@ -3,7 +3,6 @@ status: active
 domain: assurance
 id: D026
 title: "Prevent duplicate skill authority"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -32,14 +31,7 @@ What happens when managed and editable installations coexist?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.duplicate-authority-policy`
-- Meaning: Whether ledger mutation is permitted when more than one skill authority is observable.
-- Shape: `{ duplicate_absent: allow, duplicate_present: block_with_removal_guidance }`
-- Atomicity: Guidance explains the binary allow-or-block result and cannot vary independently.
-
-## Invariant
+## Invariants
 
 The skill never mutates a ledger while it can observe another applicable Decision Engineering skill copy.
 
@@ -47,15 +39,16 @@ The skill never mutates a ledger while it can observe another applicable Decisio
 
 Allow mutation only when scanning finds one applicable skill; otherwise stop and identify the copies to remove.
 
+## Output fact
+
+- Name: `package.duplicate-authority-policy`
+- Meaning: Whether ledger mutation is permitted when more than one skill authority is observable.
+- Shape: `{ duplicate_absent: allow, duplicate_present: block_with_removal_guidance }`
+- Atomicity: Guidance explains the binary allow-or-block result and cannot vary independently.
+
 ## Enforcement
 
 `installation_guard.assert_single_authority` must approve the active project before `ledger_init.py`, `ledger_new.py`, or `ledger_render.py` changes ledger files; the skill instructions require the same guard before direct edits.
-
-## Projection
-
-`package.duplicate-authority-policy.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

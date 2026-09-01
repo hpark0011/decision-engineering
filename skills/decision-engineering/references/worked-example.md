@@ -8,7 +8,7 @@
 
 Search the index for `handoff`, the expected readiness answer, and known input facts.
 
-- If `handoff.readiness` already exists, add the new UI, API, worker, or agent as a consumer of its projection. Create no decision.
+- If `handoff.readiness` already exists, add the new UI, API, worker, or agent as a consumer of that output fact. Create no decision.
 - If readiness semantics change, edit the decision that produces `handoff.readiness` and trace downstream impact.
 - If no decision resolves readiness, create one.
 
@@ -20,7 +20,6 @@ status: active
 domain: handoff
 id: D003
 title: "Determine handoff readiness"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -43,6 +42,15 @@ Is this task ready to enter handoff now?
   - Kind: derived
   - Produced by: D002
 
+## Invariants
+
+- A task reported as ready has no unrecoverable work.
+- A task reported as ready has a receiving assignee who can act on it.
+
+## Policy
+
+Return `ready` when the task is active, the workspace is clean or recoverably snapshotted, and `assignee.readiness` is ready. Otherwise return `blocked` with the first authoritative blocking reason.
+
 ## Output fact
 
 - Name: `handoff.readiness`
@@ -50,30 +58,16 @@ Is this task ready to enter handoff now?
 - Shape: `{ state: ready | blocked, reason: string }`
 - Atomicity: `reason` explains `state` and cannot change independently.
 
-## Invariant
-
-A task reported as ready has no unrecoverable work and has a receiving assignee who can act on it.
-
-## Policy
-
-Return `ready` when the task is active, the workspace is clean or recoverably snapshotted, and `assignee.readiness` is ready. Otherwise return `blocked` with the first authoritative blocking reason.
-
 ## Enforcement
 
 The start-handoff boundary must reject the transition whenever `handoff.readiness.state` is `blocked`.
 
-## Projection
-
-`handoff.readiness.public`
-
-Expose `state` and `reason`; hide internal evidence; never recompute readiness.
-
 ## Consumers
 
-- D004 — Authorize task handoff
-- Task detail UI
-- Handoff API
-- Automation agent
+- D004 — Authorize task handoff; reads `handoff.readiness` directly.
+- Task detail UI; formats `state` and `reason` without recomputing readiness.
+- Handoff API; exposes `state` and `reason` without recomputing readiness.
+- Automation agent; reads `handoff.readiness` directly.
 
 ## Verification
 

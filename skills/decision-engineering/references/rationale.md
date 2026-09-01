@@ -10,9 +10,9 @@ A task describes work; a decision removes one uncertainty. Naming the question, 
 
 When several places can author the same proposition, a wrong value does not identify where correction belongs. One external authority per root fact and one producing decision per derived fact make the repair path deterministic. Consumers use the resolved fact rather than rebuilding policy from raw inputs.
 
-## Why projections cannot decide
+## Why consumer representations are not ledger fields
 
-Projections adapt representation for consumers. Allowing them to add judgment creates a second, less visible decision owner. If representation requires a new normative choice, model that uncertainty as another decision and fact.
+Formatting, renaming, omission, and transport do not change an authoritative output fact, so record them as implementation bindings only when traceability requires it. Making every representation a named ledger field duplicates the output and obscures the decision graph. If a consumer-facing value requires new judgment, classification, defaulting, or policy, model that uncertainty as another decision and output fact.
 
 ## Why enforcement is not presentation
 
@@ -26,14 +26,14 @@ The ledger states what the system is meant to decide. Code states what it actual
 
 One file per decision keeps correction local and makes review proportional to the changed uncertainty. Stable IDs survive renames and domain regrouping. A generated index routes quickly, a generated graph exposes dependencies, and an append-only semantic log explains model changes without duplicating Git's line history.
 
-## Why domains are projections
+## Why domains are routing metadata
 
 Domain labels help routing and impact analysis, but domain boundaries can evolve. Keeping decision records flat prevents taxonomy changes from breaking stable references. Derive meaningful boundaries from facts, decisions, and invariants rather than from UI/API/database layers.
 
 ## Why deterministic lint matters
 
-Agents exercise judgment while deriving policies and fact boundaries. Mechanical constraints should produce the same verdict every run. Lint catches structural ambiguity—duplicate producers, missing authorities, dangling links, cycles, incomplete records, and stale projections—while humans retain authority over normative correctness.
+Agents exercise judgment while deriving policies and fact boundaries. Mechanical constraints should produce the same verdict every run. Lint catches structural ambiguity—duplicate producers, missing authorities, dangling links, cycles, incomplete records, and stale generated artifacts—while humans retain authority over normative correctness.
 
 ## Known limits
 
-Lint validates ledger structure, not truth. It cannot prove that the requirement is complete, a structured output is genuinely atomic, prose policy is correct, a projection contains no hidden decision, consumers do not reimplement policy, or an enforcement description binds to real code. Keep those as explicit review and verification obligations.
+Lint validates ledger structure, not truth. It cannot prove that the requirement is complete, a structured output is genuinely atomic, prose policy is correct, consumers do not reimplement policy, or an enforcement description binds to real code. Keep those as explicit review and verification obligations.

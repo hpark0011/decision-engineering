@@ -2,7 +2,6 @@
 """Allocate a stable decision ID and create a schema-valid editing template."""
 
 from pathlib import Path
-from datetime import date
 import json
 import re
 import sys
@@ -15,7 +14,6 @@ status: active
 domain: <domain>
 id: {decision_id}
 title: {title_json}
-updated_at: {updated_at}
 ---
 
 ## Requirement
@@ -32,6 +30,14 @@ updated_at: {updated_at}
   - Kind: root
   - Authority: <external-authority>
 
+## Invariants
+
+- <What must never become false.>
+
+## Policy
+
+<Rule mapping the input facts to the output fact.>
+
 ## Output fact
 
 - Name: `<output.fact>`
@@ -39,27 +45,13 @@ updated_at: {updated_at}
 - Shape: <Value or structured shape.>
 - Atomicity: <Why no part can vary independently.>
 
-## Invariant
-
-<What must never become false.>
-
-## Policy
-
-<Rule mapping the input facts to the output fact.>
-
 ## Enforcement
 
 <Boundary obligation that can reject or commit the action.>
 
-## Projection
-
-`<output.fact.public>`
-
-<Representational changes only; no new judgment.>
-
 ## Consumers
 
-- <Known UI, API, worker, agent, report, or downstream decision.>
+- <Known UI, API, worker, agent, report, or downstream decision that reads the output fact.>
 
 ## Verification
 
@@ -95,7 +87,6 @@ def main() -> int:
         TEMPLATE.format(
             decision_id=decision_id,
             title_json=json.dumps(title, ensure_ascii=False),
-            updated_at=date.today().isoformat(),
         ),
         encoding="utf-8",
     )

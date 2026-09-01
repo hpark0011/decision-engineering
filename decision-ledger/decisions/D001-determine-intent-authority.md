@@ -3,7 +3,6 @@ status: active
 domain: authority
 id: D001
 title: "Determine intent authority"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -19,6 +18,14 @@ Which artifact is authoritative for what the system is intended to decide?
   - Kind: root
   - Authority: IDEA.md — The core idea
 
+## Invariants
+
+No implementation, generated view, ticket, comment, or conversation independently overrides adopted ledger intent.
+
+## Policy
+
+Treat `decision-ledger/SCHEMA.md` and active `decision-ledger/decisions/*.md` as the source code of intent; treat other descriptions as requirement evidence or generated views unless a human adopts them through a ledger change.
+
 ## Output fact
 
 - Name: `framework.intent-authority`
@@ -26,23 +33,9 @@ Which artifact is authoritative for what the system is intended to decide?
 - Shape: `decision-ledger`
 - Atomicity: The answer names one authority for one meaning and has no independently variable part.
 
-## Invariant
-
-No implementation, projection, ticket, comment, or conversation independently overrides adopted ledger intent.
-
-## Policy
-
-Treat `decision-ledger/SCHEMA.md` and active `decision-ledger/decisions/*.md` as the source code of intent; treat other descriptions as requirement evidence or projections unless a human adopts them through a ledger change.
-
 ## Enforcement
 
 The behavior-changing review workflow must reject changes that neither cite the governing decision IDs nor include the required ledger delta.
-
-## Projection
-
-`framework.intent-authority.public`
-
-Names the ledger as the intent authority and may link to its index without adding or restating policy.
 
 ## Consumers
 
@@ -53,5 +46,5 @@ Names the ledger as the intent authority and may link to its index without addin
 ## Verification
 
 - Trace each behavior-shaping framework instruction to `SCHEMA.md` or one active decision record.
-- Flag any implementation or projection that introduces policy with no governing decision ID.
+- Flag any implementation or consumer-facing value that introduces policy with no governing decision ID.
 - Confirm the review boundary rejects an untraced behavior change.

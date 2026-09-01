@@ -5,7 +5,7 @@ This file is the constitution of this ledger. Change it only through a logged `s
 ## Authority
 
 - Treat `SCHEMA.md` and `decisions/*.md` as authoritative current intent.
-- Treat `index.md` and `generated/graph.mmd` as generated projections.
+- Treat `index.md` and `generated/graph.mmd` as generated views.
 - Treat `log.md` as append-only semantic history.
 - Treat code as authoritative behavior. Require human adjudication when behavior and intent diverge.
 
@@ -34,18 +34,17 @@ Split a structured output when any part can change independently, be right while
 
 ## Required decision record
 
-Use the headings exactly once and in this order:
+Use only these headings, exactly once and in this order:
 
 1. `## Requirement`
 2. `## Question`
 3. `## Input facts`
-4. `## Output fact`
-5. `## Invariant`
-6. `## Policy`
+4. `## Invariants`
+5. `## Policy`
+6. `## Output fact`
 7. `## Enforcement`
-8. `## Projection`
-9. `## Consumers`
-10. `## Verification`
+8. `## Consumers`
+9. `## Verification`
 
 Begin each file with YAML frontmatter:
 
@@ -55,13 +54,16 @@ status: active
 domain: example
 id: D001
 title: "Determine example"
-updated_at: 2026-08-21
 ---
 ```
 
-Require `status`, `domain`, `id`, `title`, and `updated_at` exactly once in frontmatter. Treat frontmatter as the only authoritative location for those values. Store `updated_at` as an ISO calendar date (`YYYY-MM-DD`) and refresh it on every semantic decision edit. Start the body with `## Requirement`; do not repeat decision identity in an H1 or repeat any of the five fields as body metadata.
+Require `status`, `domain`, `id`, and `title` exactly once in frontmatter. Treat frontmatter as the only authoritative location for those values. Use `log.md` and version-control history for recency instead of duplicating an update date in every record. Start the body with `## Requirement`; do not repeat decision identity in an H1 or repeat any frontmatter field as body metadata.
 
-Allow `active`, `superseded`, or `retired` status. Add `superseded_by: Dxxx` to the frontmatter of a superseded record. Keep domain as routing metadata; do not move files when domain groupings change. Derive each filename as `{id}-{slug(title)}.md` and keep it synchronized with frontmatter.
+Allow `active`, `superseded`, or `retired` status. Add `superseded_by: Dxxx` to the frontmatter of a superseded record. Derive each filename as `{id}-{slug(title)}.md` and keep it synchronized with frontmatter.
+
+### Domain
+
+A domain is the smallest authoritative consistency boundary responsible for a group of decisions and their output facts. A decision may read facts from other domains, but it produces only its own declared output fact. No domain may directly write facts owned by another domain; cross-domain use occurs through authoritative output facts. Keep domain as routing metadata and do not move files when domain groupings change.
 
 ### Input facts
 
@@ -94,13 +96,13 @@ Declare exactly these bullet fields:
 - Atomicity: `reason` explains `state` and cannot vary independently.
 ```
 
-### Invariant, policy, and enforcement
+### Invariants, policy, and enforcement
 
-State what must never become false, how inputs map to the one output, and which boundary can reject or commit an invalid action or transition. Before code exists, state a binding obligation rather than inventing an implementation symbol. UI presentation is never enforcement.
+List what must never become false, state how inputs map to the one output, and name the boundary that can reject or commit an invalid action or transition. Before code exists, state a binding obligation rather than inventing an implementation symbol. UI presentation is never enforcement.
 
-### Projection and consumers
+### Consumers
 
-Begin `Projection` with exactly one standalone backticked projection name. Permit representation changes only; require a separate decision for new judgment. List known UI, API, worker, agent, report, and downstream-decision consumers. Require consumers to use the projection or authoritative output contract.
+List known UI, API, worker, agent, report, and downstream-decision consumers. Require each consumer to read the authoritative output fact rather than reconstructing policy from inputs. A consumer may format, rename, omit, or transport the output as an implementation detail. If a consumer-facing value requires new judgment, classification, defaulting, or policy, require a separate decision with its own output fact.
 
 ### Verification
 
@@ -110,11 +112,11 @@ List concrete obligations that exercise the authoritative policy, invariant, and
 
 Read this file and `index.md` before every operation. Route a requirement to an existing output fact before creating a decision.
 
-- Consume an existing projection for a new consumer.
+- Consume an existing output fact for a new consumer.
 - Edit the owning decision when its semantics change.
 - Create only for a genuinely unresolved question and new output fact.
-- Reconcile wrong behavior by tracing projection → output fact → decision → inputs → authorities → enforcement → verification.
+- Reconcile wrong behavior by tracing the observed result → output fact → decision → inputs → authorities → enforcement → verification.
 
 Append a semantic `log.md` entry for every create, edit, rename, supersede, retire, restore, delete, or schema change. Record reason, changed semantics, and affected facts, decisions, consumers, code, and verification.
 
-Regenerate projections and lint after every semantic change. Repair structural errors rather than suppressing them.
+Regenerate the index and graph, then lint after every semantic change. Repair structural errors rather than suppressing them.
