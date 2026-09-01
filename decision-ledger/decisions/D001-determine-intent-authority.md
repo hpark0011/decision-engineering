@@ -5,7 +5,6 @@ id: D001
 title: "Determine intent authority"
 updated_at: 2026-08-21
 ---
-
 ## Requirement
 
 The system's intended behavior must have one durable, reviewable source of truth.

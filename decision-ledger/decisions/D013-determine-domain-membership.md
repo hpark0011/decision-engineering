@@ -5,7 +5,6 @@ id: D013
 title: "Determine domain membership"
 updated_at: 2026-08-21
 ---
-
 ## Requirement
 
 Domain boundaries must localize correction and change rather than mirror unstable implementation or organizational categories.

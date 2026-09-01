@@ -90,45 +90,13 @@ That way, when someone gets something wrong, the mistake doesn't have to bring t
 
 ## Why it works
 
-Most systems have a source of truth for facts and state.
+Most systems have a source of truth for facts and state. They can tell you that the price is $49, that we're targeting small fashion brands, that a feature is disabled, or that the launch date is October 10. But they usually don't have a source of truth for **why** those things are true.
 
-They can tell you:
+That becomes a problem as soon as someone needs to make a change. Imagine an agent sees that the price is $49 and is asked to improve conversion. Why is the price $49? Maybe that's the minimum price we need to hit our margin target. Maybe we tested $39 and it performed worse. Maybe an important customer has a contract tied to that price. Or maybe $49 was just a guess we made six months ago.
 
-- The price is $49.
+The current state doesn't tell you, so the agent has to reconstruct the reason from whatever context it can find. Another agent may reconstruct it differently. Over time, this is how a system becomes inconsistent: each person or agent makes a reasonable decision, but they're making those decisions from different interpretations of why the system looks the way it does.
 
-- We are targeting small fashion brands.
-
-- This feature is disabled.
-
-- The launch date is October 10.
-
-But they usually don't have a source of truth for why those things are true.
-
-That becomes a problem as soon as someone needs to make a change.
-
-Imagine an agent sees that the price is $49 and is asked to improve conversion.
-
-Why is the price $49?
-
-Maybe it was chosen because $49 gives us the margin we need.
-
-Maybe we tested $39 and it performed worse.
-
-Maybe an important customer has a contract tied to that price.
-
-Or maybe $49 was just a guess we made six months ago.
-
-The current state doesn't tell you.
-
-So the agent has to guess.
-
-And another agent may guess differently.
-
-This is how a system slowly becomes inconsistent. Each person or agent makes a reasonable decision based on their own interpretation of why the system looks the way it does.
-
-Decision Engineering gives them a shared source of truth for that intent.
-
-Instead of a pile of disconnected facts:
+Decision Engineering gives the system a shared source of truth for that intent. Instead of a pile of disconnected facts:
 
 `Facts → Facts → Facts`
 
@@ -136,25 +104,19 @@ you get a causal chain:
 
 `Goal → Requirement → Facts → Decision → New Fact`
 
-Now the system doesn't just know what is true. It can trace a fact back to the decision that created it, and trace that decision back to the reasons behind it.
+The system can now trace a fact back to the decision that created it, and trace that decision back to the facts, requirements, and goals behind it.
 
-Instead of storing only:
+So instead of storing only:
 
 **The price is $49.**
 
-we also keep:
+we also know:
 
 **We chose $49 because CAC is $35 and we want to recover acquisition cost within two months.**
 
-Now an agent doesn't have to reverse-engineer the intent from the current state. It can look it up.
+Now an agent doesn't have to reverse-engineer why the price is $49. It can look it up. More importantly, when something changes, the system can understand what that change affects. If CAC goes from $35 to $70, it can see that one of the reasons behind the $49 price is no longer true and point back to the pricing decision that needs to be revisited.
 
-And when something changes, it knows what that change means.
-
-If CAC goes from $35 to $70, the system can see that one of the reasons behind the $49 price is no longer true. It knows which decision needs to be revisited instead of blindly changing whatever happens to depend on the price.
-
-Without a source of truth for intent, every change requires someone to guess why the system was built that way.
-
-With one, humans and agents can make changes against the same reasoning.
+Without a source of truth for intent, every change starts with guessing why the system was built the way it was. With one, humans and agents can make changes from the same reasoning.
 
 **State tells you what the system is. Intent tells you why it is that way.**
 
@@ -187,25 +149,24 @@ So Decision Engineering does not make a system infallible.
 
 **It makes failure easier to point, easier to understand, and easier to recover from.**
 
-## Health metric
+## How does it work?
 
-It gives every decision explicit input facts, invariants, policy, output facts, enforcement, projection, and verification, and minimize implicit judgements so as the system architecture evolves, the
+1\) The first step is to define a requirement from user's intent.
 
-so systems can evolve without accumulating hidden or competing sources of meaning.
+2\) Then we list all the decisions that system needs to make so that requirement is met.
 
-The whole point of decision engineering is finding single home for each decision so there is no hidden couplings.
+3\) We break down each decision following the anatomy of decision and capture them in a decision ledger.
 
-- Requirement
-- Domain
-- Input facts
-- Output facts
-- Invariants
-- Policy
-- Enforcement
-- Symbol
-- Projection
-- Presentation
-- Verification
+Anatomy of decision
+
+- `Decision`: What questions must the system answer to make that outcome true?
+- `Invariants`: What must never become false for the decision to remain correct?
+- `Input facts`: What truths does each decision depend on?
+- `Policy`: How is the decision resolved given the input facts while preserving the invariant?
+- `Output fact`: What is the resolved answer from the policy?
+- `Verification`: How do we detect when the behavior diverges from the requirement, policy, or invariant?
+- `Enforcement`: When the divergence is detected, how to we enforce the correct resolution?
+- `Domain`: What boundary owns this decision, its policy, and its output fact? The decision may read facts from other domains, but it may only directly change facts inside its own domain.
 
 ## First use
 
@@ -222,58 +183,6 @@ If you're familiar with domain driven design or if you've been doing spec driven
 ## When to use
 
 Decision Engineering applies anywhere you are designing a system that must repeatedly turn inputs into reliable decisions. It can be applied for maintaining the codebase, creating agent skills, organizing the internal docs, or managing a team.
-
-## Process
-
-Decision Engineering makes behavior-shaping decisions first-class architectural objects. It gives every decision explicit facts, constraints, policy, ownership, consumers, and verification so systems can evolve without accumulating hidden or competing sources of meaning.
-
-**Requirement**\
-What outcome must become true?
-
-↓
-
-**Decision**\
-What questions must the system answer to make that outcome true?
-
-↓
-
-**Facts**\
-What truths does each decision depend on?
-
-↓
-
-**Owner**\
-Who alone has authority to answer each decision and own each fact?
-
-↓
-
-**Domain**\
-What is the smallest boundary in which those owned decisions can be made using owned facts plus explicit inputs from other domains?
-
-↓
-
-**Invariant**\
-What must never become false for the decision to remain correct?
-
-↓
-
-**Policy**\
-How is the decision derived from the authoritative facts while preserving the invariant?
-
-↓
-
-**Enforcement**\
-Where is the invariant actually prevented from being violated?
-
-↓
-
-**Projection + Presentation**\
-How does everyone else learn the resolved answer without deciding it again?
-
-↓
-
-**Verification**\
-How do we detect when actual behavior diverges from the requirement, decision, or invariant?
 
 ## How I got here
 
