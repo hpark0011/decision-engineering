@@ -1,0 +1,6 @@
+.obsidian/
+.greyboard/
+.agents/
+.claude/
+__pycache__/
+*.py[cod]

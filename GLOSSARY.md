@@ -288,10 +288,3 @@ Ownership only counts when the owner has real authority and the system enforces 
 | Scattered responsibility / Duplicated decision | One rule spread out with no clear owner / One question answered independently more than once |
 | Duplicated decision / Projection | Two independent authorities / One authority, many derived copies |
 | Decision Engineering / Decision architecture | The practice / The structure the practice produces |
-
-
-- wef
-- qwef
-  - qefqwfewqf
-  - wef
-- wefwef

@@ -34,7 +34,7 @@ npx skills@latest add hpark0011/decision-engineering
 
 ## Problem
 
-Agents and humans aren't precise. We forget things, make inconsistent judgments, and sometimes just get things wrong. That makes it hard to build a reliable system that depends on human or agent judgment.
+Humans forget things, misunderstand context, make inconsistent judgments, and change their minds. Agents hallucinate, lose context, reason differently across runs, and confidently produce incorrect outputs.
 
 So how do we build a reliable system that includes agents and humans?
 
@@ -48,9 +48,9 @@ If those decisions work well together, day after day, the restaurant is running 
 
 But even a great chef who has worked there for ten years will eventually make a bad call. They might hire the wrong person, put a dish on the menu that nobody wants, or order too much food.
 
-You can't prevent every bad decision.
+You can't demand every human or agent to be perfectly reliable.
 
-So the trick to building a reliable system out of unreliable parts isn't making sure nobody ever gets things wrong.
+The trick to building a reliable system out of unreliable parts isn't making sure nobody ever gets things wrong.
 
 It's making sure the system can catch the mistake, contain the damage so the mistake doesn't propagate to other parts of the system, locate where the mistake was made, and recover from it.
 
@@ -80,17 +80,19 @@ This matters because when something goes wrong, we want to know where the proble
 
 If sales drop because the price was wrong, we should be able to trace that back to the pricing decision, see what assumptions it was based on, fix it, and then update the parts of the system that depend on it.
 
-In other words, we don't try to make every human or agent perfectly reliable.
-
 We build a system where each decision has a clear job, its assumptions are visible, its effects are limited, and its output can be checked.
 
 That way, when someone gets something wrong, the mistake doesn't have to bring the whole system down.
 
 **Decision Engineering makes unreliable judgment safe to compose.**
 
-## Why it works
+## How does it work?
 
-Most systems have a source of truth for facts and state. They can tell you that the price is $49, that we're targeting small fashion brands, that a feature is disabled, or that the launch date is October 10. But they usually don't have a source of truth for **why** those things are true.
+Read @decision-engineering/IDEA.md to learn how Decision Engineering works.
+
+## Why this works
+
+Most systems have a source of truth for facts and state. They can tell you that the price is $49, that we're targeting small businesses, that a feature is disabled, or that the launch date is October 10. But they usually don't have a source of truth for **why** those things are true.
 
 That becomes a problem as soon as someone needs to make a change. Imagine an agent sees that the price is $49 and is asked to improve conversion. Why is the price $49? Maybe that's the minimum price we need to hit our margin target. Maybe we tested $39 and it performed worse. Maybe an important customer has a contract tied to that price. Or maybe $49 was just a guess we made six months ago.
 
@@ -149,25 +151,6 @@ So Decision Engineering does not make a system infallible.
 
 **It makes failure easier to point, easier to understand, and easier to recover from.**
 
-## How does it work?
-
-1\) The first step is to define a requirement from user's intent.
-
-2\) Then we list all the decisions that system needs to make so that requirement is met.
-
-3\) We break down each decision following the anatomy of decision and capture them in a decision ledger.
-
-Anatomy of decision
-
-- `Decision`: What questions must the system answer to make that outcome true?
-- `Invariants`: What must never become false for the decision to remain correct?
-- `Input facts`: What truths does each decision depend on?
-- `Policy`: How is the decision resolved given the input facts while preserving the invariant?
-- `Output fact`: What is the resolved answer from the policy?
-- `Verification`: How do we detect when the behavior diverges from the requirement, policy, or invariant?
-- `Enforcement`: When the divergence is detected, how to we enforce the correct resolution?
-- `Domain`: What boundary owns this decision, its policy, and its output fact? The decision may read facts from other domains, but it may only directly change facts inside its own domain.
-
 ## First use
 
 Ask the agent to route a requirement, feature, architecture change, policy, or bug through Decision Engineering. The skill reuses an existing conforming ledger or automatically creates `./decision-ledger` at the nearest Git root, falling back to the active workspace root. A user- or project-instruction override is accepted only when it stays inside that project root.
@@ -179,10 +162,6 @@ Decision engineering is intended to be applied to any kind of system that involv
 However, this is my first version and I haven't had a chance to test this concept across different domains. The easiest place to test this concept is by applying it to the software development life cycle.
 
 If you're familiar with domain driven design or if you've been doing spec driven development, and tried this decision engineering approach, I would love to hear your thoughts on how decision engineering approach compares — What's working well and where does this fail?
-
-## When to use
-
-Decision Engineering applies anywhere you are designing a system that must repeatedly turn inputs into reliable decisions. It can be applied for maintaining the codebase, creating agent skills, organizing the internal docs, or managing a team.
 
 ## How I got here
 
