@@ -3,7 +3,6 @@ status: active
 domain: distribution
 id: D025
 title: "Determine editable project installation"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -26,14 +25,7 @@ Which installation channel provides an editable project-scoped skill?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.editable-installation`
-- Meaning: The supported channel for installing a user-owned skill copy.
-- Shape: `{ installer: skills.sh, source: hpark0011/decision-engineering, scope: project, ownership: editable }`
-- Atomicity: Installer, source, scope, and ownership together define one installation relationship.
-
-## Invariant
+## Invariants
 
 The editable channel installs one canonical project payload with host links and never modifies global agent configuration.
 
@@ -41,15 +33,16 @@ The editable channel installs one canonical project payload with host links and 
 
 Use skills.sh without `--copy` for one editable canonical project payload with host links, and do not create a bespoke installer.
 
+## Output fact
+
+- Name: `package.editable-installation`
+- Meaning: The supported channel for installing a user-owned skill copy.
+- Shape: `{ installer: skills.sh, source: hpark0011/decision-engineering, scope: project, ownership: editable }`
+- Atomicity: Installer, source, scope, and ownership together define one installation relationship.
+
 ## Enforcement
 
 Acceptance validation must reject an editable path that writes global configuration or uses a maintained custom installer.
-
-## Projection
-
-`package.editable-installation.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

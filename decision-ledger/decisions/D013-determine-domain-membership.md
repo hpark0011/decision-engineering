@@ -3,15 +3,14 @@ status: active
 domain: topology
 id: D013
 title: "Determine domain membership"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
-Domain boundaries must localize correction and change rather than mirror unstable implementation or organizational categories.
+Domain boundaries must localize authority, consistency, and correction rather than mirror unstable implementation or organizational categories.
 
 ## Question
 
-Which primary domain should own a candidate decision?
+What is the smallest authoritative consistency boundary that should contain a candidate decision?
 
 ## Input facts
 
@@ -25,30 +24,26 @@ Which primary domain should own a candidate decision?
   - Kind: root
   - Authority: Maintainer review of decision dependencies, invariants, and change history
 
-## Output fact
+## Invariants
 
-- Name: `framework.domain-membership`
-- Meaning: The one primary domain label assigned to a candidate decision from its correction dependencies.
-- Shape: `lowercase domain label`
-- Atomicity: The answer assigns one decision to one primary routing boundary.
-
-## Invariant
-
-Decisions grouped in a domain share the facts and invariants that must remain correct together, while cross-domain dependencies stay narrow and explicit.
+- Decisions grouped in a domain share invariants that must remain correct together.
+- A decision produces only its declared output fact.
+- Cross-domain dependencies read authoritative output facts and never write another domain's facts directly.
 
 ## Policy
 
-Assign the candidate to the domain whose decisions consistently depend on the same authoritative facts, preserve the same invariants, and change together; use change locality as the check, and never derive the label merely from UI, API, database, team, or folder categories.
+Assign the candidate to the smallest boundary that has authority to maintain the decision and preserve its invariants with related outputs. Use authority, consistency, and correction locality as the tests; never derive the label merely from UI, API, database, team, or folder categories.
+
+## Output fact
+
+- Name: `framework.domain-membership`
+- Meaning: The one primary authority and consistency boundary assigned to a candidate decision.
+- Shape: `lowercase domain label`
+- Atomicity: The answer assigns one decision to one primary routing boundary.
 
 ## Enforcement
 
 Architecture review must reject a domain assignment that lacks dependency and change-locality evidence; domain changes update metadata and generated views without moving stable decision files.
-
-## Projection
-
-`framework.domain-membership.public`
-
-Exposes the assigned label and links to dependency evidence without adding another grouping judgment.
 
 ## Consumers
 
@@ -58,6 +53,7 @@ Exposes the assigned label and links to dependency evidence without adding anoth
 
 ## Verification
 
-- Compare each assignment with shared fact, invariant, and observed change dependencies.
+- Compare each assignment with authority, shared invariants, and observed correction dependencies.
 - Reject a grouping justified only by an implementation layer or organizational noun.
+- Reject any design that permits a domain to write another domain's facts directly.
 - Confirm a domain relabel leaves stable IDs, filenames, and fact ownership intact.

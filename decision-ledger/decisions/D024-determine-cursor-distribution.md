@@ -3,7 +3,6 @@ status: active
 domain: distribution
 id: D024
 title: "Determine Cursor distribution"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -25,14 +24,7 @@ How is the canonical skill distributed to Cursor?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.cursor-distribution`
-- Meaning: The complete host contract by which Cursor loads and scopes the package.
-- Shape: `{ supported: true, format: agent-plugins-v1, manifest: plugin.json, scope: user }`
-- Atomicity: Format, manifest, and scope jointly identify one deployable Cursor channel.
-
-## Invariant
+## Invariants
 
 Cursor loads the canonical skill as a user-scoped Agent Plugin without a host-specific fork.
 
@@ -40,15 +32,16 @@ Cursor loads the canonical skill as a user-scoped Agent Plugin without a host-sp
 
 Publish the Agent Plugins v1 root manifest and rely on fixed `skills/` discovery at user scope.
 
+## Output fact
+
+- Name: `package.cursor-distribution`
+- Meaning: The complete host contract by which Cursor loads and scopes the package.
+- Shape: `{ supported: true, format: agent-plugins-v1, manifest: plugin.json, scope: user }`
+- Atomicity: Format, manifest, and scope jointly identify one deployable Cursor channel.
+
 ## Enforcement
 
 Agent Plugins schema validation must reject an invalid root manifest or missing canonical skill.
-
-## Projection
-
-`package.cursor-distribution.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

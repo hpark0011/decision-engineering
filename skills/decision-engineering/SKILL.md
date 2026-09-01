@@ -20,7 +20,7 @@ decision-ledger/
     └── graph.mmd
 ```
 
-Keep `decisions/*.md` and `SCHEMA.md` authoritative. Treat `index.md` and `generated/graph.mmd` as generated projections. Treat `log.md` as append-only semantic history.
+Keep `decisions/*.md` and `SCHEMA.md` authoritative. Treat `index.md` and `generated/graph.mmd` as generated views. Treat `log.md` as append-only semantic history.
 
 ## Hold the structural invariants
 
@@ -29,11 +29,11 @@ Keep `decisions/*.md` and `SCHEMA.md` authoritative. Treat `index.md` and `gener
 - Give every derived fact exactly one producing decision.
 - Give every root fact exactly one named external authority or observation boundary.
 - Consume authoritative facts; never paraphrase or reconstruct another decision's result.
-- Publish a projection that changes representation only. Create another decision if a projection would introduce judgment.
+- Require consumers to read the authoritative output fact. Create another decision if a consumer-facing value would introduce judgment.
 - Enforce at a boundary that can reject or commit an action. Never treat UI presentation as enforcement.
 - Verify the authoritative policy, invariant, and enforcement path. Never copy policy into a test as a second authority.
 - Keep stable decision IDs. Never renumber or reuse IDs.
-- Store `status`, `domain`, `id`, `title`, and ISO-date `updated_at` only in YAML frontmatter. Refresh `updated_at` on every semantic decision edit. Start the body with `## Requirement`; do not repeat identity or lifecycle metadata in an H1 or prose line.
+- Store `status`, `domain`, `id`, and `title` only in YAML frontmatter. Use the semantic log and version-control history for recency. Start the body with `## Requirement`; do not repeat identity or lifecycle metadata in an H1 or prose line.
 
 Use the atomicity tests before accepting a structured output. Split it if one part could change independently, be right while another is wrong, serve a consumer independently, or require a different policy, invariant, or verification.
 
@@ -57,35 +57,34 @@ Use the atomicity tests before accepting a structured output. Split it if one pa
 
 Classify the requested change:
 
-- **Consume:** Reuse an existing output fact or projection. Add the consumer to its owning decision when the schema records consumers. Do not create a decision.
-- **Edit:** Change the existing decision that owns the affected output fact when the question, inputs, policy, invariant, enforcement, projection, output meaning, or verification changes.
+- **Consume:** Reuse an existing output fact. Add the consumer to its owning decision when the schema records consumers. Do not create a decision.
+- **Edit:** Change the existing decision that owns the affected output fact when the question, inputs, policy, invariants, enforcement, consumers, output meaning, or verification changes.
 - **Create:** Add a decision only for a genuinely unresolved question with a new authoritative output fact.
-- **Reconcile:** For a bug or mismatch, trace the wrong observation backward through projection → output fact → decision → policy and invariant → input authorities → enforcement → verification. Let a human decide whether intent or behavior changes.
+- **Reconcile:** For a bug or mismatch, trace the wrong observation backward through output fact → decision → policy and invariants → input authorities → enforcement → verification. Let a human decide whether intent or behavior changes.
 
 State the classification and the authoritative decision ID before editing code or ledger files.
 
 ## Derive or change a decision
 
 1. Restate the requirement as an outcome: what must become true? Remove implementation details.
-2. State what must remain true for that outcome to hold.
-3. Ask the exact uncertainty the system must resolve.
-4. Record `status`, `domain`, `id`, `title`, and `updated_at` in YAML frontmatter. Keep those five fields out of the body and set `updated_at` to the current ISO calendar date whenever decision semantics change.
+2. State the exact uncertainty the system must resolve.
+3. Record `status`, `domain`, `id`, and `title` in YAML frontmatter. Keep those four fields out of the body.
+4. List what must remain true for the outcome to hold.
 5. Identify each input by stable fact name:
    - Declare a root fact with `Kind: root` and one named `Authority`.
    - Declare a derived fact with `Kind: derived` and `Produced by: Dxxx`.
-6. Define one output fact with a stable name, meaning, shape, and atomicity justification.
-7. Write the invariant and the policy mapping input facts to the output fact.
+6. Write the invariants and the policy mapping input facts to the output fact.
+7. Define one output fact with a stable name, meaning, shape, and atomicity justification.
 8. Name the enforcement boundary that can reject the invalid action or transition. Use an obligation description when code does not exist; never invent a symbol.
-9. Name one projection and describe only representational changes.
-10. List known consumers. Require each to use the projection or authoritative output contract without re-deriving policy.
-11. Write verification obligations for the policy, invariant, and enforcement boundary.
-12. Allocate a new file only after routing proves it is necessary:
+9. List known consumers. Require each to read the authoritative output fact without re-deriving policy. Treat mechanical formatting, renaming, omission, and transport as implementation details; create another decision if a consumer-facing value requires judgment.
+10. Write verification obligations for the policy, invariants, and enforcement boundary.
+11. Allocate a new file only after routing proves it is necessary:
 
     ```bash
     python3 <skill-dir>/scripts/ledger_new.py <ledger-dir> "Determine example"
     ```
 
-13. Preserve a decision's ID when renaming, editing, superseding, or retiring it. Prefer superseding or retiring adopted decisions over deleting them.
+12. Preserve a decision's ID when renaming, editing, superseding, or retiring it. Prefer superseding or retiring adopted decisions over deleting them.
 
 Read [references/ledger-schema.md](references/ledger-schema.md) before authoring or changing decision files. Read [references/worked-example.md](references/worked-example.md) when the correct create/edit/consume boundary is unclear. Read [references/rationale.md](references/rationale.md) when explaining or contesting a structural rule.
 

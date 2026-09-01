@@ -3,7 +3,6 @@ status: active
 domain: distribution
 id: D020
 title: "Determine canonical skill source"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -20,14 +19,7 @@ Which repository path is the authoritative source for the Decision Engineering s
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.canonical-skill-source`
-- Meaning: The sole repository location from which every packaged skill copy is derived.
-- Shape: `skills/decision-engineering`
-- Atomicity: Authority resolves to one directory path and cannot be partially assigned.
-
-## Invariant
+## Invariants
 
 No host directory may contain a second maintained copy of the skill.
 
@@ -35,15 +27,16 @@ No host directory may contain a second maintained copy of the skill.
 
 Move the current skill tree to `skills/decision-engineering` and make every host consume that directory.
 
+## Output fact
+
+- Name: `package.canonical-skill-source`
+- Meaning: The sole repository location from which every packaged skill copy is derived.
+- Shape: `skills/decision-engineering`
+- Atomicity: Authority resolves to one directory path and cannot be partially assigned.
+
 ## Enforcement
 
 Repository validation must reject a missing canonical tree or a duplicate Decision Engineering `SKILL.md` outside it.
-
-## Projection
-
-`package.canonical-skill-source.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

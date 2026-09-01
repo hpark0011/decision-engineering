@@ -3,7 +3,6 @@ status: active
 domain: distribution
 id: D034
 title: "Determine public release source"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ Which source publishes the package?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.public-release-source`
-- Meaning: The authoritative public repository for package source and releases.
-- Shape: `https://github.com/hpark0011/decision-engineering`
-- Atomicity: A published release resolves to one source repository.
-
-## Invariant
+## Invariants
 
 All host metadata and installation documentation point to the same GitHub repository.
 
@@ -37,15 +29,16 @@ All host metadata and installation documentation point to the same GitHub reposi
 
 Publish releases and source from the existing GitHub origin.
 
+## Output fact
+
+- Name: `package.public-release-source`
+- Meaning: The authoritative public repository for package source and releases.
+- Shape: `https://github.com/hpark0011/decision-engineering`
+- Atomicity: A published release resolves to one source repository.
+
 ## Enforcement
 
 Release validation must reject repository URLs that differ from the authoritative source.
-
-## Projection
-
-`package.public-release-source.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

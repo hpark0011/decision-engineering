@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date
 import hashlib
 import json
 from pathlib import Path
@@ -17,11 +16,10 @@ REQUIRED_HEADINGS = [
     "Requirement",
     "Question",
     "Input facts",
-    "Output fact",
-    "Invariant",
+    "Invariants",
     "Policy",
+    "Output fact",
     "Enforcement",
-    "Projection",
     "Consumers",
     "Verification",
 ]
@@ -32,7 +30,7 @@ FIELD_RE_TEMPLATE = r"(?m)^- {field}:\s*(.+?)\s*$"
 FACT_NAME_RE = re.compile(r"^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$")
 DECISION_ID_RE = re.compile(r"^D\d{3,}$")
 PLACEHOLDER_RE = re.compile(r"<[^>]+>|\b(?:TODO|TBD|FIXME)\b", re.IGNORECASE)
-REQUIRED_FRONTMATTER = ("status", "domain", "id", "title", "updated_at")
+REQUIRED_FRONTMATTER = ("status", "domain", "id", "title")
 ALLOWED_FRONTMATTER = set(REQUIRED_FRONTMATTER) | {"superseded_by"}
 
 
@@ -64,7 +62,6 @@ class Decision:
     title: str
     status: str
     domain: str
-    updated_at: str
     superseded_by: Optional[str]
     sections: Dict[str, str]
     inputs: List[InputFact] = field(default_factory=list)
@@ -72,7 +69,6 @@ class Decision:
     output_meaning: str = ""
     output_shape: str = ""
     output_atomicity: str = ""
-    projection: str = ""
     consumers: List[str] = field(default_factory=list)
     verification: List[str] = field(default_factory=list)
 
@@ -203,7 +199,6 @@ def parse_decision(path: Path) -> Tuple[Optional[Decision], List[Issue]]:
     title = metadata.get("title", "")
     status = metadata.get("status", "")
     domain = metadata.get("domain", "")
-    updated_at = metadata.get("updated_at", "")
     superseded_by = metadata.get("superseded_by")
 
     if decision_id and not DECISION_ID_RE.fullmatch(decision_id):
@@ -215,12 +210,6 @@ def parse_decision(path: Path) -> Tuple[Optional[Decision], List[Issue]]:
         issues.append(Issue("E112", "frontmatter domain contains a placeholder", path))
     if status not in {"active", "superseded", "retired"}:
         issues.append(Issue("E112", "frontmatter status must be active, superseded, or retired", path))
-    try:
-        parsed_updated_at = date.fromisoformat(updated_at)
-    except ValueError:
-        parsed_updated_at = None
-    if parsed_updated_at is None or parsed_updated_at.isoformat() != updated_at:
-        issues.append(Issue("E112", "frontmatter updated_at must be an ISO calendar date (YYYY-MM-DD)", path))
     if superseded_by and not DECISION_ID_RE.fullmatch(superseded_by):
         issues.append(Issue("E113", "frontmatter superseded_by must match Dxxx", path))
     if status == "superseded" and not superseded_by:
@@ -230,12 +219,15 @@ def parse_decision(path: Path) -> Tuple[Optional[Decision], List[Issue]]:
 
     if re.search(r"(?m)^#\s+", body):
         issues.append(Issue("E120", "body must not repeat decision identity as an H1 heading", path))
-    repeated_metadata = re.findall(r"(?im)^(?:status|domain|id|title|updated_at):\s*.+$", body)
+    repeated_metadata = re.findall(r"(?im)^(?:status|domain|id|title):\s*.+$", body)
     if repeated_metadata:
-        issues.append(Issue("E121", "body must not repeat status, domain, id, title, or updated_at metadata", path))
+        issues.append(Issue("E121", "body must not repeat status, domain, id, or title metadata", path))
 
     section_matches = list(SECTION_RE.finditer(body))
     headings = [match.group(1).strip() for match in section_matches]
+    for heading in headings:
+        if heading not in REQUIRED_HEADINGS:
+            issues.append(Issue("E122", f"unsupported decision section `## {heading}`", path))
     for heading in REQUIRED_HEADINGS:
         count = headings.count(heading)
         if count != 1:
@@ -280,12 +272,6 @@ def parse_decision(path: Path) -> Tuple[Optional[Decision], List[Issue]]:
     if output_name and not FACT_NAME_RE.fullmatch(output_name):
         issues.append(Issue("E117", f"output fact name `{output_name}` is not lowercase dot/hyphen notation", path))
 
-    projection_text = sections.get("Projection", "")
-    projection_matches = re.findall(r"(?m)^`([a-z][a-z0-9]*(?:[.-][a-z0-9]+)*)`\s*$", projection_text)
-    if len(projection_matches) != 1:
-        issues.append(Issue("E118", "Projection must begin with exactly one standalone backticked name", path))
-    projection = projection_matches[0] if len(projection_matches) == 1 else ""
-
     consumers = parse_bullets(sections.get("Consumers", ""))
     verification = parse_bullets(sections.get("Verification", ""))
     if not consumers:
@@ -299,7 +285,6 @@ def parse_decision(path: Path) -> Tuple[Optional[Decision], List[Issue]]:
         title=title,
         status=status,
         domain=domain,
-        updated_at=updated_at,
         superseded_by=superseded_by,
         sections=sections,
         inputs=inputs,
@@ -307,7 +292,6 @@ def parse_decision(path: Path) -> Tuple[Optional[Decision], List[Issue]]:
         output_meaning=output_meaning,
         output_shape=output_shape,
         output_atomicity=output_atomicity,
-        projection=projection,
         consumers=consumers,
         verification=verification,
     )
@@ -338,24 +322,23 @@ def render_index(decisions: Sequence[Decision]) -> str:
         "",
         "Generated from `decisions/*.md`. Do not edit by hand.",
         "",
-        "| ID | Decision | Produces | Reads | Projection | Domain | Status |",
-        "|---|---|---|---|---|---|---|",
+        "| ID | Decision | Produces | Reads | Domain | Status |",
+        "|---|---|---|---|---|---|",
     ]
     for decision in sorted(decisions, key=lambda item: int(item.id[1:])):
         inputs = ", ".join(f"`{fact.name}`" for fact in decision.inputs) or "—"
         lines.append(
-            "| [{id}](decisions/{filename}) | {title} | `{output}` | {inputs} | `{projection}` | {domain} | {status} |".format(
+            "| [{id}](decisions/{filename}) | {title} | `{output}` | {inputs} | {domain} | {status} |".format(
                 id=decision.id,
                 filename=decision.path.name,
                 title=escape_cell(decision.title),
                 output=decision.output_name,
                 inputs=inputs,
-                projection=decision.projection,
                 domain=escape_cell(decision.domain),
                 status=decision.status,
             )
         )
-    lines.extend(["", "## Routing", "", "Search this file by output fact, question, input fact, projection, domain, status, or requirement terms in the linked decision record.", ""])
+    lines.extend(["", "## Routing", "", "Search this file by output fact, question, input fact, consumer, domain, status, or requirement terms in the linked decision record.", ""])
     return "\n".join(lines)
 
 

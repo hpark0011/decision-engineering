@@ -8,6 +8,9 @@ flowchart LR
   a_0938f56398[["IDEA.md — Why this works"]]
   f_4b9f3dbcb8(("framework.change-locality-requirement"))
   a_0938f56398 --> f_4b9f3dbcb8
+  a_fca67818e7[["decision-ledger/SCHEMA.md — Consumers"]]
+  f_d77fe05b27(("framework.consumer-representation-requirement"))
+  a_fca67818e7 --> f_d77fe05b27
   a_fb97a6d2d5[["README.md — Core philosophy and IDEA.md — The correction threshold"]]
   f_ca510c4657(("framework.correctability-requirement"))
   a_fb97a6d2d5 --> f_ca510c4657
@@ -23,15 +26,9 @@ flowchart LR
   a_301677517c[["IDEA.md — SCHEMA.md and Lint"]]
   f_e818f02cf8(("framework.machine-checkability-requirement"))
   a_301677517c --> f_e818f02cf8
-  a_3ea71feda1[["IDEA.md — Projection and Consumers"]]
-  f_522db0670d(("framework.multi-consumer-requirement"))
-  a_3ea71feda1 --> f_522db0670d
   a_45a002fbe8[["IDEA.md — The core idea"]]
   f_85a7da2cc5(("framework.persisted-intent-requirement"))
   a_45a002fbe8 --> f_85a7da2cc5
-  a_31c2078875[["repository maintainer"]]
-  f_974e3f098e(("framework.record-recency-requirement"))
-  a_31c2078875 --> f_974e3f098e
   a_26a16ad632[["IDEA.md — Verification"]]
   f_0956f215ad(("framework.verification-evidence-requirement"))
   a_26a16ad632 --> f_0956f215ad
@@ -157,7 +154,6 @@ flowchart LR
   f_c7b2f3a34d --> d_d006
   f_a691a610a0 --> d_d006
   f_e818f02cf8 --> d_d006
-  f_974e3f098e --> d_d006
   d_d006 --> f_d4c79d7e4a
   d_d007["D007: Determine ledger storage model"]
   f_8742fac834(("framework.ledger-storage-model"))
@@ -170,14 +166,14 @@ flowchart LR
   f_d0bc1b11c6 --> d_d008
   f_a691a610a0 --> d_d008
   d_d008 --> f_41c7de8ed3
-  d_d009["D009: Determine projection eligibility"]
-  f_394a50872f(("framework.projection-eligibility"))
+  d_d009["D009: Determine consumer representation treatment"]
+  f_7e47729f02(("framework.consumer-representation-treatment"))
   f_a691a610a0 --> d_d009
-  f_522db0670d --> d_d009
-  d_d009 --> f_394a50872f
+  f_d77fe05b27 --> d_d009
+  d_d009 --> f_7e47729f02
   d_d010["D010: Determine consumer fact access"]
   f_b2eac6f657(("framework.consumer-access"))
-  f_394a50872f --> d_d010
+  f_7e47729f02 --> d_d010
   f_a691a610a0 --> d_d010
   d_d010 --> f_b2eac6f657
   d_d011["D011: Determine enforcement boundary"]
@@ -362,5 +358,5 @@ flowchart LR
   classDef fact fill:#e8f3ff,stroke:#326891,stroke-width:1px;
   classDef authority fill:#f4e8ff,stroke:#704a8a,stroke-width:1px;
   class d_d001,d_d002,d_d003,d_d004,d_d005,d_d006,d_d007,d_d008,d_d009,d_d010,d_d011,d_d012,d_d013,d_d014,d_d015,d_d016,d_d017,d_d018,d_d019,d_d020,d_d021,d_d022,d_d023,d_d024,d_d025,d_d026,d_d027,d_d028,d_d029,d_d030,d_d031,d_d032,d_d033,d_d034,d_d035,d_d036,d_d037,d_d038,d_d039 decision;
-  class f_04bc37c8d1,f_0956f215ad,f_0b3e994559,f_0d77e33d06,f_0e31210c7e,f_10c54e2f9a,f_181c5b9901,f_1cc7df77f2,f_23045a0e5d,f_2791f756cd,f_28d8a0335c,f_29163df716,f_2992a679cf,f_29cbacc7d0,f_29dcfbe070,f_2a68f1a3a5,f_2b1f2543ee,f_394a50872f,f_3996f21296,f_3c44cb7b39,f_3c51b126c8,f_41c7de8ed3,f_4241b3eaab,f_4336e749ab,f_48f4a523da,f_4994aed6f8,f_4b9f3dbcb8,f_4c5563c3ff,f_522db0670d,f_536b1d6c62,f_577f6209f5,f_5b8e2f2fa6,f_60e208979b,f_627bb30776,f_6e9c8d5982,f_7038113c45,f_708b27e3e7,f_71c59ceaf7,f_732adbbc4c,f_733308ea1e,f_781d618f13,f_7984514c2b,f_7d4bcba5b8,f_85a7da2cc5,f_8620eda80a,f_8742fac834,f_8922864396,f_8a47b1e137,f_8cf91c50f6,f_924020707a,f_94eb2ff08e,f_974e3f098e,f_9e97aa0117,f_a6876a76b0,f_a691a610a0,f_a91475eb3a,f_ac43bffb6b,f_ac6fd54091,f_ae03fee73e,f_b197c5ad77,f_b2eac6f657,f_b41804516f,f_bbcba9210e,f_bef7f6f0f1,f_c1fc48b0f4,f_c7b2f3a34d,f_c8600a3254,f_ca510c4657,f_cac85d9904,f_cbd65ff187,f_d0bc1b11c6,f_d4c79d7e4a,f_d602e1611c,f_e173fe62c8,f_e818f02cf8,f_ea10c5d724,f_f23ab6b7f5,f_f24d238882,f_fa7df658a6,f_fad8b793f0,f_fcf76f533d,f_ff808087ce fact;
-  class a_00b163c244,a_0938f56398,a_0c0fe116bb,a_1120993c9a,a_134e6f5a9e,a_1d471c773e,a_26a16ad632,a_301677517c,a_31c2078875,a_393083a799,a_3ea71feda1,a_45a002fbe8,a_573760b5bd,a_7ca15dd941,a_881b84c603,a_8c91066a9f,a_8f9297e0c3,a_9420dfbeaa,a_a39371a978,a_a63de9870b,a_b8b8d933d0,a_cf135f9ca8,a_d131277164,a_f52f22a849,a_fb97a6d2d5 authority;
+  class f_04bc37c8d1,f_0956f215ad,f_0b3e994559,f_0d77e33d06,f_0e31210c7e,f_10c54e2f9a,f_181c5b9901,f_1cc7df77f2,f_23045a0e5d,f_2791f756cd,f_28d8a0335c,f_29163df716,f_2992a679cf,f_29cbacc7d0,f_29dcfbe070,f_2a68f1a3a5,f_2b1f2543ee,f_3996f21296,f_3c44cb7b39,f_3c51b126c8,f_41c7de8ed3,f_4241b3eaab,f_4336e749ab,f_48f4a523da,f_4994aed6f8,f_4b9f3dbcb8,f_4c5563c3ff,f_536b1d6c62,f_577f6209f5,f_5b8e2f2fa6,f_60e208979b,f_627bb30776,f_6e9c8d5982,f_7038113c45,f_708b27e3e7,f_71c59ceaf7,f_732adbbc4c,f_733308ea1e,f_781d618f13,f_7984514c2b,f_7d4bcba5b8,f_7e47729f02,f_85a7da2cc5,f_8620eda80a,f_8742fac834,f_8922864396,f_8a47b1e137,f_8cf91c50f6,f_924020707a,f_94eb2ff08e,f_9e97aa0117,f_a6876a76b0,f_a691a610a0,f_a91475eb3a,f_ac43bffb6b,f_ac6fd54091,f_ae03fee73e,f_b197c5ad77,f_b2eac6f657,f_b41804516f,f_bbcba9210e,f_bef7f6f0f1,f_c1fc48b0f4,f_c7b2f3a34d,f_c8600a3254,f_ca510c4657,f_cac85d9904,f_cbd65ff187,f_d0bc1b11c6,f_d4c79d7e4a,f_d602e1611c,f_d77fe05b27,f_e173fe62c8,f_e818f02cf8,f_ea10c5d724,f_f23ab6b7f5,f_f24d238882,f_fa7df658a6,f_fad8b793f0,f_fcf76f533d,f_ff808087ce fact;
+  class a_00b163c244,a_0938f56398,a_0c0fe116bb,a_1120993c9a,a_134e6f5a9e,a_1d471c773e,a_26a16ad632,a_301677517c,a_393083a799,a_45a002fbe8,a_573760b5bd,a_7ca15dd941,a_881b84c603,a_8c91066a9f,a_8f9297e0c3,a_9420dfbeaa,a_a39371a978,a_a63de9870b,a_b8b8d933d0,a_cf135f9ca8,a_d131277164,a_f52f22a849,a_fb97a6d2d5,a_fca67818e7 authority;

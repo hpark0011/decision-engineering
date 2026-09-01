@@ -3,11 +3,10 @@ status: active
 domain: distribution
 id: D030
 title: "Generate distribution metadata"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
-Host manifests remain correct projections of package identity, contents, and version.
+Host manifests remain correct generated artifacts of package identity, contents, and version.
 
 ## Question
 
@@ -34,30 +33,24 @@ How are host manifests and their versions maintained?
   - Kind: derived
   - Produced by: D029
 
-## Output fact
-
-- Name: `package.distribution-metadata`
-- Meaning: The generated set of host manifests and shared version metadata.
-- Shape: `{ plugin.json, .claude-plugin/plugin.json, .claude-plugin/marketplace.json, .codex-plugin/plugin.json, .agents/plugins/marketplace.json, VERSION }`
-- Atomicity: The files form one generated projection set; a stale member invalidates the set.
-
-## Invariant
+## Invariants
 
 Generated manifests contain no independent policy and always match canonical identity, source layout, and version.
 
 ## Policy
 
-Generate every host manifest and GitHub marketplace catalog from one metadata definition and verify checked-in projections are current.
+Generate every host manifest and GitHub marketplace catalog from one metadata definition and verify checked-in artifacts are current.
+
+## Output fact
+
+- Name: `package.distribution-metadata`
+- Meaning: The generated set of host manifests and shared version metadata.
+- Shape: `{ plugin.json, .claude-plugin/plugin.json, .claude-plugin/marketplace.json, .codex-plugin/plugin.json, .agents/plugins/marketplace.json, VERSION }`
+- Atomicity: The files form one generated artifact set; a stale member invalidates the set.
 
 ## Enforcement
 
 `scripts/generate_manifests.py --check`, called by `scripts/validate_package.py`, must reject hand drift or a stale generated file.
-
-## Projection
-
-`package.distribution-metadata.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

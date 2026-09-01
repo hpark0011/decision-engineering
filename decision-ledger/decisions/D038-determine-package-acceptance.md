@@ -3,7 +3,6 @@ status: active
 domain: assurance
 id: D038
 title: "Determine package acceptance"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -59,14 +58,7 @@ Which verification result makes a package release acceptable?
   - Kind: root
   - Authority: release verification results
 
-## Output fact
-
-- Name: `package.acceptance`
-- Meaning: Whether a candidate package satisfies every required release check.
-- Shape: `{ state: accepted | rejected, failures: string[] }`
-- Atomicity: Failures explain the aggregate state and cannot vary independently.
-
-## Invariant
+## Invariants
 
 Acceptance requires host installation, skill invocation, initialization, decision creation, lint/render, upgrade preservation, uninstall preservation, duplicate detection, platform, metadata, license, support, and execution-boundary checks.
 
@@ -74,15 +66,16 @@ Acceptance requires host installation, skill invocation, initialization, decisio
 
 Accept only when every required check passes; any missing or failing result rejects the candidate.
 
+## Output fact
+
+- Name: `package.acceptance`
+- Meaning: Whether a candidate package satisfies every required release check.
+- Shape: `{ state: accepted | rejected, failures: string[] }`
+- Atomicity: Failures explain the aggregate state and cannot vary independently.
+
 ## Enforcement
 
 `scripts/validate_package.py`, the three-host lifecycle tests, native manifest validators, skills.sh discovery, and the three-OS CI matrix form the acceptance boundary; publication must not proceed while any required result is absent or failing.
-
-## Projection
-
-`package.acceptance.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

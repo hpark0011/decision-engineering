@@ -3,7 +3,6 @@ status: active
 domain: operations
 id: D028
 title: "Initialize a missing ledger"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -25,14 +24,7 @@ What action occurs when the resolved project ledger does not exist?
   - Kind: root
   - Authority: filesystem observation at the resolved path
 
-## Output fact
-
-- Name: `package.ledger-initialization`
-- Meaning: The action required before the first ledger-backed operation proceeds.
-- Shape: `{ existing: reuse, missing_and_unique_skill: create, duplicate_skill: block }`
-- Atomicity: The selected action is one mutually exclusive initialization state.
-
-## Invariant
+## Invariants
 
 Initialization never overwrites an existing ledger or proceeds with duplicate authority.
 
@@ -40,15 +32,16 @@ Initialization never overwrites an existing ledger or proceeds with duplicate au
 
 Reuse a conforming ledger; otherwise automatically initialize the resolved path only after duplicate validation permits mutation.
 
+## Output fact
+
+- Name: `package.ledger-initialization`
+- Meaning: The action required before the first ledger-backed operation proceeds.
+- Shape: `{ existing: reuse, missing_and_unique_skill: create, duplicate_skill: block }`
+- Atomicity: The selected action is one mutually exclusive initialization state.
+
 ## Enforcement
 
 `ledger_init.main` must perform project-containment, duplicate-authority, and existence checks before writing the bundled template.
-
-## Projection
-
-`package.ledger-initialization.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

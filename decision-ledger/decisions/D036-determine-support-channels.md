@@ -3,7 +3,6 @@ status: active
 domain: governance
 id: D036
 title: "Determine support channels"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ Where are package support requests routed?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.support-routing`
-- Meaning: The mapping from support request kind to its public channel.
-- Shape: `{ defects: GitHub Issues, questions_and_field_reports: GitHub Discussions }`
-- Atomicity: The mapping is one routing policy; each request resolves to exactly one channel.
-
-## Invariant
+## Invariants
 
 Documentation never presents another authoritative support destination.
 
@@ -37,15 +29,16 @@ Documentation never presents another authoritative support destination.
 
 Route reproducible defects to Issues and usage questions or field evidence to Discussions.
 
+## Output fact
+
+- Name: `package.support-routing`
+- Meaning: The mapping from support request kind to its public channel.
+- Shape: `{ defects: GitHub Issues, questions_and_field_reports: GitHub Discussions }`
+- Atomicity: The mapping is one routing policy; each request resolves to exactly one channel.
+
 ## Enforcement
 
 Documentation review must reject absent or conflicting support routes.
-
-## Projection
-
-`package.support-routing.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

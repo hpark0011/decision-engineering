@@ -51,7 +51,6 @@ def lint(ledger_dir: Path) -> List[Issue]:
     issues.extend(parse_issues)
     by_id: Dict[str, Decision] = {}
     by_output: Dict[str, Decision] = {}
-    by_projection: Dict[str, Decision] = {}
     root_authorities: Dict[str, str] = {}
 
     for decision in decisions:
@@ -67,11 +66,6 @@ def lint(ledger_dir: Path) -> List[Issue]:
                 issues.append(Issue("E203", f"output fact `{decision.output_name}` also produced by {by_output[decision.output_name].id}", decision.path))
             else:
                 by_output[decision.output_name] = decision
-        if decision.projection:
-            if decision.projection in by_projection:
-                issues.append(Issue("E204", f"projection `{decision.projection}` also owned by {by_projection[decision.projection].id}", decision.path))
-            else:
-                by_projection[decision.projection] = decision
         for fact in decision.inputs:
             if fact.kind == "root" and fact.authority:
                 previous = root_authorities.get(fact.name)
@@ -111,7 +105,7 @@ def lint(ledger_dir: Path) -> List[Issue]:
         log_text = log_path.read_text(encoding="utf-8")
         for decision in decisions:
             history = re.search(
-                rf"(?m)^## \[\d{{4}}-\d{{2}}-\d{{2}}\] (?:create|restore|schema-change|schema-migration) \| {re.escape(decision.id)} \|",
+                rf"(?m)^## \\?\[\d{{4}}-\d{{2}}-\d{{2}}\\?\] (?:create|restore|schema-change|schema-migration) \| {re.escape(decision.id)} \|",
                 log_text,
             )
             if not history:

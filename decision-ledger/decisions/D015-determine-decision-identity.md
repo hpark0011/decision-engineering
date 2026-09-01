@@ -3,7 +3,6 @@ status: active
 domain: lifecycle
 id: D015
 title: "Determine decision identity"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -25,14 +24,7 @@ Which stable identifier must a candidate decision record use?
   - Kind: root
   - Authority: Maintainer proposing the ledger change
 
-## Output fact
-
-- Name: `framework.decision-identity`
-- Meaning: The permanent D-prefixed identifier assigned to one decision record.
-- Shape: `D followed by at least three decimal digits`
-- Atomicity: The output is one indivisible identifier for one decision.
-
-## Invariant
+## Invariants
 
 An adopted ID is never renumbered, reused, or changed by rename, edit, domain reassignment, supersession, retirement, or restoration.
 
@@ -40,15 +32,16 @@ An adopted ID is never renumbered, reused, or changed by rename, edit, domain re
 
 Preserve the existing ID for every lifecycle transition of an adopted record; for a genuinely new decision, allocate the next unused numeric ID above the greatest identifier ever present and never recycle deleted, retired, or superseded IDs.
 
+## Output fact
+
+- Name: `framework.decision-identity`
+- Meaning: The permanent D-prefixed identifier assigned to one decision record.
+- Shape: `D followed by at least three decimal digits`
+- Atomicity: The output is one indivisible identifier for one decision.
+
 ## Enforcement
 
 `ledger_new.py` must allocate the next ID, `ledger_lint.py` must reject filename and heading mismatches or duplicate IDs, and lifecycle review must reject reuse of historical IDs.
-
-## Projection
-
-`framework.decision-identity.public`
-
-Exposes the stable ID and current title without deriving identity from title, domain, or path.
 
 ## Consumers
 

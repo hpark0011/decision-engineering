@@ -3,7 +3,6 @@ status: active
 domain: distribution
 id: D021
 title: "Determine packaged skill contents"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ Which files belong to the distributed skill payload?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.skill-content-contract`
-- Meaning: The inclusion boundary for the installable skill payload.
-- Shape: every file recursively contained by `skills/decision-engineering`
-- Atomicity: The directory tree is one inclusion boundary; omitting any member makes the payload incomplete.
-
-## Invariant
+## Invariants
 
 An installed skill retains its instructions, agents metadata, assets, references, and scripts with relative paths unchanged.
 
@@ -37,15 +29,16 @@ An installed skill retains its instructions, agents metadata, assets, references
 
 Ship the complete canonical directory recursively and do not maintain host-specific forks.
 
+## Output fact
+
+- Name: `package.skill-content-contract`
+- Meaning: The inclusion boundary for the installable skill payload.
+- Shape: every file recursively contained by `skills/decision-engineering`
+- Atomicity: The directory tree is one inclusion boundary; omitting any member makes the payload incomplete.
+
 ## Enforcement
 
 Package validation must reject any host-visible payload that omits a canonical file or introduces another maintained copy.
-
-## Projection
-
-`package.skill-content-contract.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

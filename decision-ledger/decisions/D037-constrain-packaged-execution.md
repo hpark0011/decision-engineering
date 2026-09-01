@@ -3,7 +3,6 @@ status: active
 domain: assurance
 id: D037
 title: "Constrain packaged execution"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ What side-effect boundary governs packaged skill execution?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.execution-boundary`
-- Meaning: The permitted runtime side effects of the installed skill.
-- Shape: `{ network: denied, telemetry: none, processing: local, writes: resolved project ledger only }`
-- Atomicity: The fields jointly define one execution sandbox; relaxing any field changes the boundary.
-
-## Invariant
+## Invariants
 
 Skill execution never transmits data or writes outside the project-contained ledger.
 
@@ -37,15 +29,16 @@ Skill execution never transmits data or writes outside the project-contained led
 
 Use local standard-library operations only; distinguish third-party installation-time network activity from skill runtime.
 
+## Output fact
+
+- Name: `package.execution-boundary`
+- Meaning: The permitted runtime side effects of the installed skill.
+- Shape: `{ network: denied, telemetry: none, processing: local, writes: resolved project ledger only }`
+- Atomicity: The fields jointly define one execution sandbox; relaxing any field changes the boundary.
+
 ## Enforcement
 
 `scripts/validate_package.py` must reject network-client imports, and `installation_guard.project_root_for` must reject ledger writes outside the active project.
-
-## Projection
-
-`package.execution-boundary.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

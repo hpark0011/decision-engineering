@@ -3,7 +3,6 @@ status: active
 domain: modeling
 id: D004
 title: "Determine decision atomicity"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ Does a candidate decision resolve exactly one independently decidable propositio
   - Kind: root
   - Authority: IDEA.md — The central unit
 
-## Output fact
-
-- Name: `framework.decision-atomicity`
-- Meaning: Whether one candidate decision is atomic or must be split.
-- Shape: `{ state: atomic | split-required, reason: string }`
-- Atomicity: `reason` explains the atomicity state and cannot change independently without misrepresenting it.
-
-## Invariant
+## Invariants
 
 One decision resolves one question, applies one policy, and produces one authoritative output fact.
 
@@ -37,15 +29,16 @@ One decision resolves one question, applies one policy, and produces one authori
 
 Return `split-required` if any output part can change independently, be correct while another is wrong, serve a consumer independently, or require a different policy, invariant, or verification; otherwise return `atomic` only when the record produces one proposition from one question.
 
+## Output fact
+
+- Name: `framework.decision-atomicity`
+- Meaning: Whether one candidate decision is atomic or must be split.
+- Shape: `{ state: atomic | split-required, reason: string }`
+- Atomicity: `reason` explains the atomicity state and cannot change independently without misrepresenting it.
+
 ## Enforcement
 
 Ledger authoring review must reject a candidate record until the atomicity tests pass; `ledger_lint.py` must reject records that syntactically declare anything other than one output fact.
-
-## Projection
-
-`framework.decision-atomicity.public`
-
-Exposes the state and explanatory reason without changing the atomicity test.
 
 ## Consumers
 

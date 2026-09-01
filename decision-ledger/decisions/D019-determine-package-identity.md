@@ -3,11 +3,10 @@ status: active
 domain: distribution
 id: D019
 title: "Determine package identity"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
-Every distribution projection identifies the package by one stable public name.
+Every distribution artifact identifies the package by one stable public name.
 
 ## Question
 
@@ -19,6 +18,14 @@ What package name identifies Decision Engineering across every supported host an
   - Kind: root
   - Authority: packaging-owner interview
 
+## Invariants
+
+Manifests, install commands, release artifacts, and documentation must name the same package.
+
+## Policy
+
+Use `decision-engineering` exactly, normalized as lowercase kebab-case, in every distribution artifact.
+
 ## Output fact
 
 - Name: `package.identity`
@@ -26,23 +33,9 @@ What package name identifies Decision Engineering across every supported host an
 - Shape: `decision-engineering`
 - Atomicity: A package has one identifier; changing it replaces the whole fact.
 
-## Invariant
-
-Manifests, install commands, release artifacts, and documentation must name the same package.
-
-## Policy
-
-Use `decision-engineering` exactly, normalized as lowercase kebab-case, in every distribution projection.
-
 ## Enforcement
 
 Distribution metadata validation must reject any manifest or install command whose package identifier differs.
-
-## Projection
-
-`package.identity.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 

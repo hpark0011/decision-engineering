@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from datetime import date
 from pathlib import Path
 import shutil
 import subprocess
@@ -83,17 +82,16 @@ class PackageTests(unittest.TestCase):
                 marker.write_text("preserve me", encoding="utf-8")
                 created = run(sys.executable, str(scripts / "ledger_new.py"), str(ledger), "Determine sample", cwd=project)
                 decision_path = Path(created.stdout.splitlines()[0])
-                self.assertIn(
-                    f"updated_at: {date.today().isoformat()}",
-                    decision_path.read_text(encoding="utf-8"),
-                )
+                generated_record = decision_path.read_text(encoding="utf-8")
+                self.assertIn("## Invariants", generated_record)
+                self.assertNotIn("updated_at:", generated_record)
+                self.assertNotIn("## Projection", generated_record)
                 decision_path.write_text(
                     """---
 status: active
 domain: sample
 id: D001
 title: "Determine sample"
-updated_at: 2026-08-21
 ---
 
 ## Requirement
@@ -110,6 +108,14 @@ Is the sample accepted?
   - Kind: root
   - Authority: test fixture
 
+## Invariants
+
+- Only an observed request can be accepted.
+
+## Policy
+
+Accept the observed test request.
+
 ## Output fact
 
 - Name: `sample.acceptance`
@@ -117,23 +123,9 @@ Is the sample accepted?
 - Shape: `accepted | rejected`
 - Atomicity: One binary state changes as a whole.
 
-## Invariant
-
-Only an observed request can be accepted.
-
-## Policy
-
-Accept the observed test request.
-
 ## Enforcement
 
 The test boundary rejects an unobserved request.
-
-## Projection
-
-`sample.acceptance.public`
-
-Render the state without new judgment.
 
 ## Consumers
 
@@ -153,7 +145,7 @@ Render the state without new judgment.
 
                 valid_decision = decision_path.read_text(encoding="utf-8")
                 decision_path.write_text(
-                    valid_decision.replace("updated_at: 2026-08-21", "updated_at: not-a-date"),
+                    valid_decision.replace("## Consumers", "## Projection\n\n`sample.acceptance.public`\n\n## Consumers"),
                     encoding="utf-8",
                 )
                 malformed = run(
@@ -163,7 +155,7 @@ Render the state without new judgment.
                     cwd=project,
                     expected=1,
                 )
-                self.assertIn("updated_at must be an ISO calendar date", malformed.stdout)
+                self.assertIn("unsupported decision section `## Projection`", malformed.stdout)
                 decision_path.write_text(valid_decision, encoding="utf-8")
 
                 shutil.rmtree(installed_skill)

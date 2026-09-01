@@ -566,3 +566,54 @@ Affected:
 - `framework.record-validity`
 - D001-D039
 - `SCHEMA.md`, the bundled ledger schema, skill instructions, record templates, examples, tests, and linting
+
+## \[2026-09-01\] schema-change | D006 | Simplify the decision record contract
+
+Reason: The record duplicated recency already owned by semantic history and version control, and the required Projection field duplicated the authoritative output fact with an implementation representation.
+
+Changed:
+
+- Removed `updated_at` from authoritative frontmatter.
+- Replaced the singular `Invariant` heading with one `Invariants` section that may list multiple constraints.
+- Ordered the decision body as inputs, invariants, policy, output, enforcement, consumers, and verification.
+- Removed the required `Projection` section and required consumers to read the authoritative output fact directly.
+- Defined mechanical consumer representations as implementation bindings and judgment-bearing representations as separate decisions.
+- Migrated D001-D039 and updated templates, examples, parsing, rendering, lint enforcement, and tests.
+
+Affected:
+
+- `framework.record-validity`
+- D001-D039
+- `SCHEMA.md`, the bundled ledger schema, skill instructions, record templates, examples, tests, rendering, and linting
+
+## \[2026-09-01\] rename | D009 | Determine consumer representation treatment
+
+Reason: Projection eligibility was removed from the record schema, but the boundary between mechanical representation and new judgment remains an authoritative framework decision.
+
+Changed:
+
+- Renamed D009 from “Determine projection eligibility.”
+- Replaced `framework.projection-eligibility` with `framework.consumer-representation-treatment`.
+- Classified formatting, renaming, omission, and transport as implementation details while requiring a separate decision for judgment-bearing representations.
+
+Affected:
+
+- D005 — Determine fact authority
+- D010 — Determine consumer fact access
+- Consumer integration and decision review
+
+## \[2026-09-01\] edit | D010, D013 | Align consumer access and domain ownership
+
+Reason: Removing projections and adopting an authority-and-consistency definition of domain changed the rules for consumer access and domain assignment.
+
+Changed:
+
+- Required consumers to read authoritative output facts directly, with mechanical representation limited to implementation bindings.
+- Defined a domain as the smallest authority and consistency boundary that preserves related invariants.
+- Prohibited domains from writing another domain's facts directly.
+
+Affected:
+
+- `framework.consumer-access`
+- `framework.domain-membership`
+- Consumer integrations, architecture routing, and impact analysis

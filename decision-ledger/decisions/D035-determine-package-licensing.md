@@ -3,7 +3,6 @@ status: active
 domain: governance
 id: D035
 title: "Determine package licensing"
-updated_at: 2026-08-21
 ---
 ## Requirement
 
@@ -22,14 +21,7 @@ Which license governs the distributed package?
   - Kind: root
   - Authority: packaging-owner interview
 
-## Output fact
-
-- Name: `package.license`
-- Meaning: The legal license applied to package source and distributions.
-- Shape: `MIT`
-- Atomicity: One SPDX license identifier governs the package.
-
-## Invariant
+## Invariants
 
 The repository license file and every manifest declare MIT.
 
@@ -37,15 +29,16 @@ The repository license file and every manifest declare MIT.
 
 Use the MIT License for broad adoption and editable redistribution.
 
+## Output fact
+
+- Name: `package.license`
+- Meaning: The legal license applied to package source and distributions.
+- Shape: `MIT`
+- Atomicity: One SPDX license identifier governs the package.
+
 ## Enforcement
 
 Package validation must reject a missing license file or mismatched manifest identifier.
-
-## Projection
-
-`package.license.public`
-
-Expose the output fact with host-appropriate naming and formatting only; introduce no new judgment.
 
 ## Consumers
 
