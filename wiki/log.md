@@ -79,3 +79,27 @@
 
 - Answered as a follow-up factual lookup; not filed.
 - Clarified that `MEMORY.md` holds compact, durable, actionable environment and workflow facts, while user identity/preferences belong in `USER.md`, project authority belongs in context files, and transient or rediscoverable material stays out.
+
+## [2026-09-02] update | Align summaries with the minimal ledger contract
+
+- Source: the current workspace `decision-ledger/SCHEMA.md`, adopted through its logged schema change.
+- Updated `concepts/decision-ledger.md` with the eight-section record format, one default schema, and dependencies derived from input/output facts.
+- Updated `concepts/productizing-decision-engineering.md` to defer explicit usage lists from the earlier product discussion.
+- Updated `concepts/authority-and-projection.md` to align its terminology with the current glossary.
+- Updated `index.md` with the current contract source, summary, and date; kept the 17-page count.
+- Preserved raw source snapshots as historical evidence.
+
+## [2026-09-02] update | Multiple policies within a decision
+
+- Source: the current workspace ledger schema and its schema-change entry for D006.
+- Updated `concepts/decision-ledger.md` to describe multiple policies within the existing Policy section and their explicit combination.
+- Updated `concepts/anatomy-of-a-decision.md` with the handoff example of several policies producing one output fact.
+- Updated the `index.md` summary; the wiki remains at 17 pages.
+
+## [2026-09-02] update | Direct ledger maintenance and source ownership
+
+- Sources: `../skills/decision-engineering/SKILL.md` and its bundled `assets/decision-ledger/SCHEMA.md`.
+- Removed the repository's internal ledger and its parser-dependent tooling; the skill now maintains project records and views directly.
+- Updated `concepts/decision-ledger.md` to explain the current workflow and distinguish it from the earlier proposal for a skill's own design ledger.
+- Retargeted current schema references in `concepts/decision-ledger.md`, `concepts/anatomy-of-a-decision.md`, `concepts/productizing-decision-engineering.md`, and `index.md` to the bundled contract.
+- Updated `index.md` with the workflow source; retained the 17-page count and historical raw sources and log entries.

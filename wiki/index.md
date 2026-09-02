@@ -1,6 +1,6 @@
 # Wiki Index
 
-> Content catalog. Every wiki page listed under its type with a one-line summary. Read this first to find relevant pages for any query. Last updated: 2026-08-21 | Total pages: 17
+> Content catalog. Every wiki page listed under its type with a one-line summary. Read this first to find relevant pages for any query. Last updated: 2026-09-02 | Total pages: 17
 
 ## Start here
 
@@ -20,7 +20,7 @@
 - [[anatomy-of-a-decision]] — The requirement → decision → facts → owner → domain → invariant → policy → enforcement → projection → verification pipeline, and where the decision proper ends.
 - [[authority-and-projection]] — Information may be copied; authority may not. Projections, presentations, traceability, and how a projection becomes a competing authority.
 - [[decision-entropy]] — The six failure modes (hidden, duplicated, scattered, coupled, weakly owned, stale) and Cost of Next Change as their signal.
-- [[decision-ledger]] — The authoritative record of decisions; why the dependency-graph requirement is what makes it machine-checkable.
+- [[decision-ledger]] — The record contract, multiple policies per decision, and direct maintenance of records and dependency views.
 - [[domain-boundaries]] — Domains emerge from decision dependencies, not nouns; the grouping procedure and the change test.
 - [[information-theoretic-foundation]] — What von Neumann's error-control constructions actually establish, how restoration maps to verification, and what the analogy still lacks.
 - [[productizing-decision-engineering]] — Zero-friction chat MVP: event-triggered delta extraction quietly turns conversational commitments into ledger and log updates.
@@ -45,7 +45,10 @@ _None yet._
 
 ## Sources
 
-- `raw/articles/de-glossary.md` — GLOSSARY.md snapshot, 2026-08-20. Authoritative for definitions.
+- `../skills/decision-engineering/assets/decision-ledger/SCHEMA.md` — Default ledger record contract as of 2026-09-02.
+- `../skills/decision-engineering/SKILL.md` — Current workflow for direct ledger maintenance and review.
+- `../README.md` — Current overview of the skill and its maintained sources.
+- `raw/articles/de-glossary.md` — GLOSSARY.md snapshot, 2026-08-20. Historical definitions; use the workspace glossary for current definitions.
 - `raw/articles/de-readme.md` — README.md snapshot, 2026-08-20. Intent and rationale; rougher and older than the glossary.
 - `raw/articles/karpathy-llm-wiki.md` — Andrej Karpathy, "LLM Wiki" (gist), ingested 2026-08-20.
 - `raw/papers/von-neumann-probabilistic-logics-1956.md` and companion `.pdf` — J. von Neumann, *Probabilistic Logics and the Synthesis of Reliable Organisms from Unreliable Components*; 1952 lectures, published 1956, ingested 2026-08-20.

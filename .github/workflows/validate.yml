@@ -17,4 +17,3 @@ jobs:
         with:
           python-version: "3.10"
       - run: python scripts/validate_package.py
-      - run: python skills/decision-engineering/scripts/ledger_lint.py decision-ledger

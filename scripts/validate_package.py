@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate generated metadata, source ownership, execution boundaries, and lifecycle behavior."""
+"""Validate generated metadata, source ownership, execution boundaries, and installation checks."""
 
 from __future__ import annotations
 
@@ -20,13 +20,7 @@ REQUIRED_RUNNERS = ("ubuntu-latest", "macos-latest", "windows-latest")
 REQUIRED_PAYLOAD = (
     "SKILL.md",
     "assets/decision-ledger/SCHEMA.md",
-    "references/ledger-schema.md",
     "scripts/installation_guard.py",
-    "scripts/ledger_init.py",
-    "scripts/ledger_lib.py",
-    "scripts/ledger_lint.py",
-    "scripts/ledger_new.py",
-    "scripts/ledger_render.py",
 )
 
 
@@ -187,8 +181,6 @@ def check_platform_matrix() -> None:
         fail("validation workflow omits runners: " + ", ".join(missing))
     if "scripts/validate_package.py" not in text:
         fail("validation workflow does not run the package validator")
-    if "ledger_lint.py" not in text:
-        fail("validation workflow does not run ledger lint")
 
 
 def main() -> int:

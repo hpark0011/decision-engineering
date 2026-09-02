@@ -1,6 +1,18 @@
 # Decision Engineering
 
-Decision Engineering is the discipline of building reliable decision systems out of unreliable decision-makers.
+An agent gets something wrong. So we give it more context: memory, tools through MCP, a longer prompt, better retrieval system, and so on.
+
+More context can supply missing facts. But **agents, like humans, can still produce different judgments from same facts**. This is what makes challenging when building a reliable system that consists agents and humans.
+
+Building reliable system out of unreliable parts is something that we've been doing for a while now and great thinkers like Claude Shannon and John von Neumann has already thought about this.
+
+The core insight is this: You can build reliable system from unreliable parts if the system has enough error-correcting capacity to remove errors faster than they accumulate. To put more simply, if you can spot a single point of error, you can fix the error before the error impacts other part of the system, and maintain a reliable system.
+
+So the key to building a reliable system is not to prevent wrong judgement, but to build a system that recovers from the wrong judgement. Targeted recovery requires knowing where a decision went wrong and what depends on it.
+
+**Explicit decisions give errors an address.**
+
+Decision Engineering is a way to build reliable systems from unreliable decision-makers. It puts decision as a first class object for deriving the architecture of the system. It makes decisions explicit, gives their outputs clear ownership, and connects them so failure in the system can be traced and corrected.
 
 ## Installation
 
@@ -32,95 +44,191 @@ The repository root follows Agent Plugins 1.0, which Cursor loads directly. Impo
 npx skills@latest add hpark0011/decision-engineering
 ```
 
+The skill maintains project ledgers by editing Markdown directly. See the [workflow](skills/decision-engineering/SKILL.md) and [default record contract](skills/decision-engineering/assets/decision-ledger/SCHEMA.md). This repository maintains those sources directly without a separate ledger for its own design.
+
 ## Problem
 
-Humans forget things, misunderstand context, make inconsistent judgments, and change their minds. Agents hallucinate, lose context, reason differently across runs, and confidently produce incorrect outputs.
+Imagine a customer asks for a refund. The order arrived 35 days ago. The item is unused. They've been buying from you for years.
 
-So how do we build a reliable system that includes agents and humans?
+One agent says, "They're a loyal customer. Let's give them a refund." Another says, "It's been over a month. We should decline."
 
-First, let's think about what a "system" is.
+Both have the same facts. What they don't share is a rule for deciding what matters more. More order history won't settle that.
 
-A system is a collection of decisions put together to serve a larger goal.
+We can put that rule in a prompt. But if the code follows a different rule, or someone remembers an exception that was never written down, we still have several versions of what's right.
 
-Think of a restaurant. Its goal is to make profit by serving food people want to come back for. To do that, the owner, manager, chefs, and waiters all make decisions in their own part of the restaurant: what goes on the menu, who to hire, how much food to order, how to cook a dish, or how to deal with an unhappy customer.
+Then a refund goes wrong, and we're searching through prompts, code, and conversations to figure out why.
 
-If those decisions work well together, day after day, the restaurant is running on a reliable system and be able to consistently make profit by satisfying the customer.
+## Core Principle
 
-But even a great chef who has worked there for ten years will eventually make a bad call. They might hire the wrong person, put a dish on the menu that nobody wants, or order too much food.
+**Localize the error.**
 
-You can't demand every human or agent to be perfectly reliable.
+Better models and better information can reduce mistakes. We still need a way to catch the ones that get through, limit the damage, and put things right.
 
-The trick to building a reliable system out of unreliable parts isn't making sure nobody ever gets things wrong.
+That gets much easier when we can point to a decision, see the facts it used, and check the rule it followed. We can work out whether the facts were wrong, the rule was wrong, or the agent didn't follow it. Then we can see which later decisions used that result.
 
-It's making sure the system can catch the mistake, contain the damage so the mistake doesn't propagate to other parts of the system, locate where the mistake was made, and recover from it.
+This is error localization. It gives us somewhere to investigate and tells us what we may need to redo. An explicit decision provides that starting point.
 
-## Solution
+## How Decision Engineering Works
 
-Decision Engineering makes decisions first-class architectural objects and gets used as a source of truth for intent of the system design.
+There are two things it builds:
 
-It solves two problems that makes system unreliable.
+- A **Decision Ledger** that spells out how each decision should work.
+- A **Decision Graph** that shows how those decisions depend on one another.
 
-1. Decisions made with implicit assumptions creates inconsistency or disagreement
-2. Unable to pin point the single cause of error
+Start with one workflow:
 
-It has two philosophies.
+1. Find the decisions that change what happens next. Give each a name or ID.
+2. Write down what each decision needs to know, which rules it follows, and how you'll check its answer.
+3. Give each decision one result that it owns. Draw the links to every decision that uses that result.
+4. Put those checks into the working system and keep a record of what happened.
 
-1. Break down every decision into a concrete structure and minimize judgements made with implicit assumptions.
-2. Every decision should only output one fact. If decision creates more than one fact, the system is vulnerable for having scattered responsibilities or hidden couplings down the line.
+You now have a place to look up what should happen, a map of what depends on it, and a way to compare that with what actually happened.
 
-The first step is to make important decisions explicit.
+## Decision Ledger
 
-Instead of letting a decision live in someone's head, a chat thread, or buried inside a document, we write down what was decided, what facts it depended on, and what part of the system it controls.
+Take a decision like "Is this order eligible for a refund?" The ledger puts everything needed to understand and check that decision in one place.
 
-Then we give that decision a clear boundary.
+A ledger can contain multiple policies. One decision may apply several policies together: refund eligibility might depend on both a return-window policy and an item-condition policy. Those policies combine to produce one eligibility result.
 
-A pricing decision should decide the price. It shouldn't also quietly change the website, the sales forecast, and the marketing plan. Those parts of the system can use the price, but they should make their own decisions.
+| Element | What you write down |
+| --- | --- |
+| Requirement | What must become true, without prescribing the implementation. |
+| Decision | The one uncertainty being resolved, in the form of a question. |
+| Input facts | The authoritative root or derived facts the decision reads. |
+| Invariants | What must remain true regardless of the answer. |
+| Policy | One or more policies that turn the input facts into an answer, including how they combine. |
+| Output fact | The one result this decision owns. |
+| Verification | The checks that exercise the policies, their interactions, and invariants. |
+| Enforcement | The boundary that can reject an invalid action or state. |
 
-This matters because when something goes wrong, we want to know where the problem came from.
+For a refund, verification can catch an approval that breaks the applicable policies. Enforcement stops that approval from turning into a payment. Both should refer to the same policies and combination rules in the ledger.
 
-If sales drop because the price was wrong, we should be able to trace that back to the pricing decision, see what assumptions it was based on, fix it, and then update the parts of the system that depend on it.
+Keep versions of the decision definitions. Each time a decision runs, record its ID, the version it used, the input facts, the answer, and the checks. When something goes wrong, you can follow what happened.
 
-We build a system where each decision has a clear job, its assumptions are visible, its effects are limited, and its output can be checked.
+The rule itself can be wrong, too. Having it written down gives everyone a place to question it and make a correction.
 
-That way, when someone gets something wrong, the mistake doesn't have to bring the whole system down.
+## Decision Graph
 
-**Decision Engineering makes unreliable judgment safe to compose.**
+Decisions rarely stand alone. Whether an order qualifies for a refund affects what we tell the customer. The graph makes that connection visible.
 
-## How does it work?
+The core rule is:
 
-Read @decision-engineering/IDEA.md to learn how Decision Engineering works.
+**One decision → one authoritative output fact.**
 
-## Why this works
+Each result has one decision that owns it. Many other decisions can use that result, but they all get it from the same place. Facts from outside the system have named sources.
 
-Most systems have a source of truth for facts and state. They can tell you that the price is $49, that we're targeting small businesses, that a feature is disabled, or that the launch date is October 10. But they usually don't have a source of truth for **why** those things are true.
+An output fact is simply a recorded answer, like `refund_eligibility = ineligible`. It can still be wrong. The useful part is knowing exactly where it came from.
 
-That becomes a problem as soon as someone needs to make a change. Imagine an agent sees that the price is $49 and is asked to improve conversion. Why is the price $49? Maybe that's the minimum price we need to hit our margin target. Maybe we tested $39 and it performed worse. Maybe an important customer has a contract tied to that price. Or maybe $49 was just a guess we made six months ago.
+Compare the graph with your code, prompts, and workflows. These three patterns are worth looking for.
 
-The current state doesn't tell you, so the agent has to reconstruct the reason from whatever context it can find. Another agent may reconstruct it differently. Over time, this is how a system becomes inconsistent: each person or agent makes a reasonable decision, but they're making those decisions from different interpretations of why the system looks the way it does.
+### 1. Scattered responsibility
 
-Decision Engineering gives the system a shared source of truth for that intent. Instead of a pile of disconnected facts:
+The support agent and the payment workflow each decide whether the same order qualifies for a refund.
 
-`Facts → Facts → Facts`
+```mermaid
+flowchart LR
+    F([Same order facts]) --> S["Support agent:<br/>Decide refund eligibility"]
+    F --> P["Payment workflow:<br/>Decide refund eligibility"]
+    S -->|eligible| E([refund_eligibility])
+    P -->|ineligible| E
+    classDef problem fill:#fff1f0,stroke:#b42318,color:#7a271a,stroke-width:2px
+    class E problem
+```
 
-you get a causal chain:
+Two decisions claim to own `refund_eligibility`. They disagree, and the rest of the system has no single answer to use.
 
-`Goal → Requirement → Facts → Decision → New Fact`
+### 2. Mixed responsibility
 
-The system can now trace a fact back to the decision that created it, and trace that decision back to the facts, requirements, and goals behind it.
+One decision decides eligibility, the refund amount, and what to tell the customer.
 
-So instead of storing only:
+```mermaid
+flowchart LR
+    F([Order and payment facts]) --> D[Handle refund]
+    D --> E([refund_eligibility])
+    D --> A([refund_amount])
+    D --> R([response_plan])
+    classDef problem fill:#fff1f0,stroke:#b42318,color:#7a271a,stroke-width:2px
+    class D problem
+```
 
-**The price is $49.**
+One decision owns three separate answers. Each needs its own rules and checks, but they're all bundled together.
 
-we also know:
+### 3. Hidden coupling
 
-**We chose $49 because CAC is $35 and we want to recover acquisition cost within two months.**
+The agent writing the reply quietly applies its own version of the refund policy. Here, the order is outside the 30-day window, but the reply agent makes an exception for a loyal customer.
 
-Now an agent doesn't have to reverse-engineer why the price is $49. It can look it up. More importantly, when something changes, the system can understand what that change affects. If CAC goes from $35 to $70, it can see that one of the reasons behind the $49 price is no longer true and point back to the pricing decision that needs to be revisited.
+```mermaid
+flowchart TD
+    F([Order facts:<br/>35 days old, unused, loyal customer]) --> D1["Decide refund eligibility:<br/>30-day policy"]
+    D1 --> E([refund_eligibility = ineligible])
+    E --> D2[Choose customer response]
+    D2 --> R([response_plan = promise a refund])
+    F -. reads facts again .-> D2
+    P["Hidden rule in reply prompt:<br/>Loyal customers get an exception"] -. overrides eligibility .-> D2
+    classDef problem fill:#fff1f0,stroke:#b42318,color:#7a271a,stroke-width:2px
+    class P,R problem
+```
 
-Without a source of truth for intent, every change starts with guessing why the system was built the way it was. With one, humans and agents can make changes from the same reasoning.
+The dashed links show dependencies missing from the declared graph. The reply agent reads the original facts and applies a local rule, overriding the recorded eligibility. Changing the official policy won't update that hidden copy.
 
-**State tells you what the system is. Intent tells you why it is that way.**
+Separate decisions that need separate rules or corrections. Putting several independent answers into one object doesn't make them one decision.
+
+Different agents or people can carry out the same decision. They share its definition, and later steps use its recorded result.
+
+When an answer turns out to be wrong, the graph shows where to start looking and which other answers may need another look. The checks and records help you find the cause.
+
+## Example: A Refund Decision
+
+Let's give the store a simple policy: unused items qualify for a refund within 30 days of delivery. Missing or invalid information goes to review.
+
+Here's a short ledger entry for `D1: Determine refund eligibility`:
+
+- **Facts:** days since delivery and whether the item is unused, with a source for each.
+- **Invariant:** an order outside the 30-day window can't be marked eligible.
+- **Policy:** missing or invalid inputs return `needs_review`. Otherwise, unused items at 0–30 days return `eligible`; all other cases return `ineligible`.
+- **Output:** `refund_eligibility`.
+- **Verification:** check the answer against the facts and policy. Test an unused item at the boundary: day 30 qualifies, day 31 doesn't.
+- **Enforcement:** block answers that break the rules and send the request to review before a refund goes through.
+
+The next decision uses that answer to choose a response:
+
+```mermaid
+flowchart LR
+    A[Delivery and item facts] --> D1["D1: Determine refund eligibility"]
+    D1 --> F1[refund_eligibility]
+    F1 --> D2["D2: Choose customer response"]
+    D2 --> F2[response_plan]
+```
+
+`D2` uses `refund_eligibility` to choose an approval, decline, or review response. It has no reason to calculate the 30-day window again. That decision already has an owner.
+
+If the 35-day request is marked eligible, start with `D1`. If it's correctly marked ineligible but the reply promises a refund, start with `D2`. If the delivery date was wrong, fix that fact and run the affected decisions again.
+
+Each case gives us somewhere specific to look and a way to work out what needs fixing.
+
+## Where It Fits in the Agent Stack
+
+Most systems have a place to look up facts and state. The price is $49. A feature is disabled. The launch date is October 10. But when it's time to change something, knowing the current state only gets you so far.
+
+Imagine asking an agent to improve conversion. It sees that the price is $49. Maybe that price protects a margin target. Maybe a previous experiment showed that $39 performed worse. Maybe a customer has a contract tied to it. Or maybe $49 was a guess someone made six months ago.
+
+Those are very different reasons to keep the price or change it. The current state doesn't tell you which applies. So the agent pieces together an explanation from whatever context it can find. Another agent may piece together a different one. Each change can look reasonable on its own while pulling the system in a different direction.
+
+**Decision Engineering gives people and agents a shared place to look up the decision and the reasoning behind it.** The ledger records the facts it used, the policies it followed, and the conditions its result must satisfy. Requirements guide those rules. The graph connects the result to the decision that produced it and to the decisions that use it.
+
+`Requirements + input facts + policies → Decision → Output fact`
+
+For the pricing decision, customer acquisition cost (CAC) might have been $35, and the team might have required that acquisition cost be recovered within two months. The decision record keeps those inputs alongside the costs and pricing test results used to choose $49. If CAC rises to $70, there's a specific decision to revisit. The graph shows which later decisions depend on its result.
+
+A changed input calls for another look. It doesn't automatically make the old price wrong. It gives the team a place to check whether the original choice still meets its requirements.
+
+Your harness still runs the work: calling models and tools, managing context and state, handling retries, and bringing in a person when needed. The ledger and graph give that work a shared definition of correct. Together, they form an **authoritative decision system: the source of truth for why a choice was made, what must remain true, who owns the result, and how to check it.**
+
+Prompts, tests, runtime checks, and human reviews all refer to those same decision definitions. An agent can use them to make a choice, and the harness can check that choice before accepting the result or allowing an action.
+
+When a check fails, the decision definition and execution record give you a place to investigate. The graph shows which other results may be affected. The harness can then retry the decision, ask for review, discard an outdated result, or reverse an action where possible.
+
+When the rule itself needs to change, update its ledger entry and the checks that enforce it together. Use the graph to find which decisions need another look. People and agents can then make that change from the same reasoning.
 
 ## Limitation
 
@@ -147,27 +255,11 @@ Yes → make it explicit
 
 Sometimes there simply isn't enough information to know what the right answer is. In decision engineering, this is called irreducible uncertainties. In those cases, the system can make the uncertainty visible, keep the decision easy to change, and limit the damage if the decision turns out to be wrong.
 
-So Decision Engineering does not make a system infallible.
-
-**It makes failure easier to point, easier to understand, and easier to recover from.**
-
-## First use
-
-Ask the agent to route a requirement, feature, architecture change, policy, or bug through Decision Engineering. The skill reuses an existing conforming ledger or automatically creates `./decision-ledger` at the nearest Git root, falling back to the active workspace root. A user- or project-instruction override is accepted only when it stays inside that project root.
-
-## Who is it for?
-
-Decision engineering is intended to be applied to any kind of system that involves human intention — codebase, agent harness, company documents, investment strategy, and even when designing org structure.
-
-However, this is my first version and I haven't had a chance to test this concept across different domains. The easiest place to test this concept is by applying it to the software development life cycle.
-
-If you're familiar with domain driven design or if you've been doing spec driven development, and tried this decision engineering approach, I would love to hear your thoughts on how decision engineering approach compares — What's working well and where does this fail?
-
 ## How I got here
 
 Decision engineering was born from the thought "can I measure agent's level of understanding of the codebase?".
 
-My idea for this question was this. If agent can predict how much token it would cost to meet the user's requirement, it means the agent has full understanding of the codebase. In other words, I would have agent predict the token cost during the planning phase, and measure the delta of the prediction and real token usage after agent has implemented the plan. The delta would be the surprise that agent didn't expect to account when it was making the prediction and if I fix what caused the delta, it means that agent has a full understanding of the system and it's able to predict how much token it would cost to make a change in the system.
+My answer to this question was this. If agent can predict how much token it would cost to meet the user's requirement, it means the agent has full understanding of the codebase. In other words, I would have agent predict the token cost during the planning phase, and measure the delta of the prediction and real token usage after agent has implemented the plan. The delta would be the surprise that agent didn't expect to account when it was making the prediction and if I fix what caused the delta, it means that agent has a full understanding of the system and it's able to predict how much token it would cost to make a change in the system.
 
 So I created a skill and tested this but in practice, there were too many variables that agent had to account to make the right prediction. Each model, thinking level, would impact the token cost and when I asked agent what caused the prediction delta and agent gave me the reason, many of the reasons were hard to verify.
 

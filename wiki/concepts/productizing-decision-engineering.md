@@ -1,10 +1,10 @@
 ---
 title: Productizing Decision Engineering
 created: 2026-08-21
-updated: 2026-08-21
+updated: 2026-09-02
 type: concept
 tags: [decision, ledger, context-engineering, agent-harness, verification, methodology]
-sources: [raw/transcripts/discussing-decision-engineering-and-hermes-2026-08-21.md]
+sources: [raw/transcripts/discussing-decision-engineering-and-hermes-2026-08-21.md, ../skills/decision-engineering/assets/decision-ledger/SCHEMA.md]
 confidence: medium
 ---
 
@@ -58,8 +58,12 @@ A useful candidate preserves enough reasoning to remain actionable later:
 - what was decided;
 - why it was chosen;
 - which facts were treated as authoritative;
-- which other decisions or consumers depend on it; and
+- which other decisions depend on it; and
 - what should be revisited if an input changes.
+
+The [2026-09-02 ledger contract](../../skills/decision-engineering/assets/decision-ledger/SCHEMA.md) narrows dependency capture to
+declared input and output facts. Separate usage lists from the earlier product discussion are
+deferred in the minimal skill.
 
 This is the product-level distinction explored in [[hermes-vs-decision-engineering]]: reusable
 procedures make repeated execution easier, while a durable decision record keeps later reasoning

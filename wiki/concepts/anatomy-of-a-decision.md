@@ -1,10 +1,10 @@
 ---
 title: Anatomy of a Decision
 created: 2026-08-20
-updated: 2026-08-20
+updated: 2026-09-02
 type: concept
 tags: [decision, requirement, fact, policy, invariant, enforcement, verification]
-sources: [raw/articles/de-glossary.md, raw/articles/de-readme.md]
+sources: [raw/articles/de-glossary.md, raw/articles/de-readme.md, ../skills/decision-engineering/assets/decision-ledger/SCHEMA.md]
 confidence: medium
 ---
 
@@ -26,7 +26,7 @@ Each step is a question. The README frames the whole method as answering them in
 | Owner | Who alone has authority to answer each decision and own each fact? |
 | Domain | What is the smallest boundary in which those decisions can be made from owned facts plus explicit inputs? |
 | Invariant | What must never become false for the decision to remain correct? |
-| Policy | How is the decision derived from authoritative facts while preserving the invariant? |
+| Policy | Which policies derive the answer from authoritative facts, and how do they combine while preserving the invariant? |
 | Enforcement | Where is the invariant actually prevented from being violated? |
 | Projection + Presentation | How does everyone else learn the resolved answer without deciding it again? |
 | Verification | How do we detect when actual behavior diverges from requirement, decision, or invariant? |
@@ -36,7 +36,7 @@ The compact form from the glossary:
 ```text
 intent → business requirement → decision → outcome → behavior
                                   ↑
-                    facts + invariants + policy
+                    facts + invariants + policies
 ```
 
 ## Where the decision ends
@@ -49,6 +49,11 @@ reasoning.^[raw/articles/de-readme.md]
 
 This matters practically: a ledger entry can be complete as reasoning while its enforcement is
 still unbuilt. The two are separately reviewable.
+
+The [current schema](../../skills/decision-engineering/assets/decision-ledger/SCHEMA.md) permits multiple policies within one
+decision. In the handoff example, task eligibility, work preservation, and assignee readiness
+policies must all pass to produce one readiness fact. Several policies do not imply several
+output facts.^[../skills/decision-engineering/assets/decision-ledger/SCHEMA.md]
 
 ## Finding the decisions: recursive decision mapping
 

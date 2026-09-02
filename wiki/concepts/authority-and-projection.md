@@ -1,7 +1,7 @@
 ---
 title: Authority and Projection
 created: 2026-08-20
-updated: 2026-08-20
+updated: 2026-09-02
 type: concept
 tags: [projection, presentation, ownership, traceability, drift, verification]
 sources: [raw/articles/de-glossary.md, raw/articles/de-readme.md, raw/papers/von-neumann-probabilistic-logics-1956.md]
@@ -18,7 +18,7 @@ Presentation, Stale projection, Traceability, Weak ownership, Decision outcome.
 Information may be copied freely. **Authority over a meaning may not.**
 
 This single sentence carries most of the framework's practical weight. A projection is a
-representation derived from authoritative information for some consumer — API responses, search
+representation derived from authoritative information for a particular use — API responses, search
 indexes, config files, executable skills. Copying is fine in a projection. Independent authority
 is not. A projection must stay traceable to its source and must never quietly become a second
 owner of the same meaning.
@@ -27,7 +27,7 @@ owner of the same meaning.
 
 > Being used in many places does not make something authoritative.
 
-A cached value, a UI label, or a copied rule can have many consumers and still have no
+A cached value, a UI label, or a copied rule can be read in many places and still have no
 authority. This inverts the usual intuition that the most-referenced thing is the real one —
 and it is exactly the mistake the agent made in the launch-email example on
 [[decision-engineering]], where recency stood in for authority.
@@ -38,7 +38,7 @@ and it is exactly the mistake the agent made in the launch-email example on
 authoritative fact → decision → outcome → projection → presentation
 ```
 
-**Projection** serves any consumer; **presentation** serves a human. The state
+**Projection** serves any use; **presentation** serves a human. The state
 `task.status = "ready_for_review"` is authoritative, `"Ready for review"` is a presentation of
 it. A presentation stays derived. It does not become a second source of truth.
 

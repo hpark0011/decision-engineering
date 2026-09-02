@@ -8,7 +8,7 @@
 
 Search the index for `handoff`, the expected readiness answer, and known input facts.
 
-- If `handoff.readiness` already exists, add the new UI, API, worker, or agent as a consumer of that output fact. Create no decision.
+- If `handoff.readiness` already exists, reuse that output fact. No ledger change is needed when its meaning and dependencies stay the same.
 - If readiness semantics change, edit the decision that produces `handoff.readiness` and trace downstream impact.
 - If no decision resolves readiness, create one.
 
@@ -20,6 +20,7 @@ status: active
 domain: handoff
 id: D003
 title: "Determine handoff readiness"
+updated_at: 2026-08-20
 ---
 
 ## Requirement
@@ -49,7 +50,11 @@ Is this task ready to enter handoff now?
 
 ## Policy
 
-Return `ready` when the task is active, the workspace is clean or recoverably snapshotted, and `assignee.readiness` is ready. Otherwise return `blocked` with the first authoritative blocking reason.
+- Task eligibility policy: the task must be active.
+- Work preservation policy: the workspace must be clean or recoverably snapshotted.
+- Assignee readiness policy: `assignee.readiness` must be ready.
+
+All three policies must pass for the output to be `ready`. Otherwise return `blocked`, using the first failing policy in the order above as the reason.
 
 ## Output fact
 
@@ -62,23 +67,17 @@ Return `ready` when the task is active, the workspace is clean or recoverably sn
 
 The start-handoff boundary must reject the transition whenever `handoff.readiness.state` is `blocked`.
 
-## Consumers
-
-- D004 — Authorize task handoff; reads `handoff.readiness` directly.
-- Task detail UI; formats `state` and `reason` without recomputing readiness.
-- Handoff API; exposes `state` and `reason` without recomputing readiness.
-- Automation agent; reads `handoff.readiness` directly.
-
 ## Verification
 
 - Block when the task is not active.
 - Block when work is neither clean nor recoverably snapshotted.
 - Block when the receiving assignee is not ready.
 - Return ready only when every required input permits handoff.
+- When multiple policies fail, report the first failure in the declared order.
 - Reject every blocked result at the start-handoff boundary.
 ```
 
-The output is atomic because `reason` explains the same readiness proposition. Authorization, assignment state, audit severity, and UI presentation state would be independently decidable and therefore require separate decisions.
+The three policies jointly resolve one readiness proposition. The output is atomic because `reason` explains that same proposition. Authorization, assignment state, audit severity, and UI presentation state would be independently decidable and therefore require separate decisions.
 
 ## Semantic log entry
 
@@ -99,13 +98,13 @@ Affected:
 - Automation agent
 ```
 
-Render the index and graph, lint, then cite D003 from implementation work.
+Follow the [review and view-maintenance workflow](../SKILL.md#review-and-refresh-the-views), then cite D003 from implementation work.
 
 ## Small-change counterexample
 
 For “add a keyboard shortcut to archive the selected task,” first locate the owner of `task.archivability`.
 
-- If it exists, add `Keyboard shortcut` to that decision's consumers. The delta contains zero new decisions.
+- If it exists, make the shortcut use `task.archivability`. The ledger stays unchanged when the existing policy and dependencies already cover the action.
 - If it does not exist, create the one question “May the selected task be archived now?” and one output fact `task.archivability`.
 
 Proportionality changes the size of the delta, not whether intent is recorded.
