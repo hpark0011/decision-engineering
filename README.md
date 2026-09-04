@@ -325,6 +325,7 @@ More worked examples:
 
 - [Product development: choosing and shipping a product bet](examples/product-development.md)
 - [Public markets: making and managing an equity investment](examples/public-market-investment.md)
+- [Hiring: moving a candidate from evidence to offer](examples/hiring.md)
 
 ## Architecture
 
