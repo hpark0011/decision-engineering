@@ -16,6 +16,8 @@ When several places can author the same proposition, a wrong value does not iden
 
 A disabled button or warning can be bypassed by another UI, API, worker, or agent. Only a commit or rejection boundary can preserve the invariant across every entry point. Presentation may explain the result; enforcement must prevent an invalid result or transition.
 
+When a decision output cannot authorize or commit any action or state and no consumer needs a rejection boundary, the schema permits an explicit not-applicable reason. Missing enforcement implementation is unresolved work, not a valid exemption.
+
 ## Why intent and behavior remain separate authorities
 
 The ledger states what the system is meant to decide. Code states what it actually does. Declaring either one automatically correct would erase the distinction between a bug and an unrecorded intent change. A human adjudicates divergence, then changes the losing side.

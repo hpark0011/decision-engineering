@@ -37,7 +37,7 @@ State the classification and the authoritative decision ID before editing code o
 
 1. Clarify the requested outcome and uncertainty, then inspect the governing decision and relevant implementation.
 2. Trace the inputs to their authorities and work through the proposed result. Apply the schema's atomicity criteria before deciding whether to split the decision.
-3. Draft or revise the record using the schema's required structure and field definitions. Check the policies against the invariants, and identify the enforcement and verification work needed to make the intent real.
+3. Draft or revise the record using the schema's required structure and field definitions. Check the policies against the invariants, and identify the enforcement and verification work needed to make the intent real. When an invariant, enforcement obligation, or verification obligation genuinely does not apply, record the schema-approved reason instead of omitting the section or inventing a binding.
 4. Create a new Markdown file only after routing proves it is necessary. Select an unused ID by checking both existing records and semantic history, then write the complete record according to the project's schema.
 5. Update metadata and filenames to reflect the accepted change, following the schema's identity and lifecycle rules. Retain adopted decisions through supersession or retirement; delete only accidental records that were never accepted.
 
@@ -53,11 +53,11 @@ Append a `log.md` entry for each accepted semantic, identity, lifecycle, or sche
 
 ## Review and refresh the views
 
-Review changed records and their dependencies against the project's complete schema. Assess policy correctness and actual enforcement and verification bindings as well as structural conformance.
+Review changed records and their dependencies against the project's complete schema. Assess policy correctness, actual enforcement and verification bindings, and every claimed not-applicable reason as well as structural conformance.
 
 After a semantic change, edit the index and Mermaid graph directly from the records according to the schema's view definitions. Trace each affected reference to its source record and check both views for stale or missing entries. Repair confirmed defects and review the affected records and views again.
 
-Report unresolved findings. Do not call a ledger implementation-ready while bindings, authorities, enforcement, verification, or open normative questions remain unresolved.
+Report unresolved findings. Do not call a ledger implementation-ready while bindings, authorities, enforcement, verification, or open normative questions remain unresolved. A schema-approved not-applicable reason resolves the record obligation but remains an explicit limitation to report.
 
 ## Hand off the result
 
@@ -65,9 +65,10 @@ Report:
 
 - the route taken: consume, edit, create, or reconcile;
 - the decision IDs and output facts involved;
-- the ledger files changed and semantic log entry added;
+- the ledger files changed and semantic log entries added, or why no ledger mutation was required;
 - downstream decisions and code affected;
 - schema review and view refresh results;
+- schema-approved not-applicable reasons and their limitations;
 - unresolved questions, premises, or implementation bindings;
 - whether code behavior now matches recorded intent.
 

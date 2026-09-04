@@ -92,15 +92,17 @@ Changed:
 - Declared two root facts and one derived input.
 
 Affected:
+- `handoff.readiness`
 - D004 — Authorize task handoff
 - Task detail UI
 - Handoff API
 - Automation agent
+- D003 policy-branch and start-handoff enforcement verification
 ```
 
 Follow the [review and view-maintenance workflow](../SKILL.md#review-and-refresh-the-views), then cite D003 from implementation work.
 
-## Small-change counterexample
+## Small-change counter example
 
 For “add a keyboard shortcut to archive the selected task,” first locate the owner of `task.archivability`.
 

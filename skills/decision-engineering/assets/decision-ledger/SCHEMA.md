@@ -47,7 +47,7 @@ Use only these headings, exactly once and in this order:
 7. `## Enforcement`
 8. `## Verification`
 
-State the outcome that must become true in `Requirement` and the exact uncertainty to resolve in `Question`. Fill every section with concrete content.
+State the outcome that must become true in `Requirement` and the exact uncertainty to resolve in `Question`. Fill every section with concrete content or, for invariants, enforcement, and verification only, an explicit not-applicable reason that satisfies this schema.
 
 Begin each file with YAML frontmatter:
 
@@ -109,6 +109,24 @@ Declare exactly these bullet fields:
 ### Verification
 
 `Verification` contains concrete bullet obligations that exercise every meaningful policy branch and interaction between policies, prove the invariant at the enforcement boundary, and verify rejection of invalid results or transitions. Verification exercises the authoritative policies without encoding a second copy in tests.
+
+### Not-applicable obligations
+
+The `Invariants`, `Enforcement`, and `Verification` headings are always required. When one genuinely does not apply, replace its normal content with exactly one paragraph in this form:
+
+```markdown
+Not applicable: <specific reason grounded in this decision and its consumers>.
+```
+
+A reason is schema-approved only when review confirms all of the following:
+
+- Non-applicability follows from the nature of the decision and its output, rather than from missing design, implementation, evidence, or tests.
+- No policy branch, invariant, consumer, action, state transition, or observable check makes the obligation applicable.
+- The reason is specific enough to be challenged and revised if the decision or its consumers change.
+
+For `Invariants`, this means no condition independent of the policy result must remain true. For `Enforcement`, the output cannot authorize or commit an action or state and no consumer needs a rejection boundary. For `Verification`, no authoritative observation, replay, or human review can distinguish a compliant result; irreducible judgment is not exempt when its authority or process can still be checked.
+
+`TBD`, `not implemented`, `no tests`, `unknown`, and equivalent placeholders are unresolved work, not approved reasons. An approved reason satisfies the record contract but does not claim that the absent safeguard exists; carry it into readiness and correction-threshold reporting as a limitation.
 
 ## Semantic log
 

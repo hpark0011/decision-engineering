@@ -215,9 +215,9 @@ Its job is not to explain every decision in full. Its job is to route quickly fr
 A useful index entry contains:
 
 ```
-| ID   | Decision                    | Produces                | Reads                            | Status |
-|------|-----------------------------|-------------------------|----------------------------------|--------|
-| D003 | Determine handoff readiness | `handoff.readiness`     | `task.status`, `workspace.clean` | active |
+| ID   | Decision                    | Produces            | Reads                                                               | Domain  | Status |
+|------|-----------------------------|---------------------|---------------------------------------------------------------------|---------|--------|
+| D003 | Determine handoff readiness | `handoff.readiness` | `task.status`, `workspace.cleanliness`, `assignee.readiness`         | handoff | active |
 ```
 
 The most important routing key is usually the output fact. When an agent needs to know who owns `handoff.readiness`, the index should point directly to the one decision that produces it.
@@ -345,7 +345,7 @@ The ledger's `SCHEMA.md` defines the exact metadata, headings, order, and format
 
 - **Requirement:** What must become true, without prescribing the implementation.
 
-- **Decision:** The one uncertainty being resolved, in a form of question.
+- **Question:** The one uncertainty being resolved.
 
 - **Input facts:** The authoritative root or derived facts the decision reads.
 
@@ -355,9 +355,9 @@ The ledger's `SCHEMA.md` defines the exact metadata, headings, order, and format
 
 - **Output fact:** The one result this decision owns.
 
-- **Verification:** The checks that exercise the policies, their interactions, and invariants.
-
 - **Enforcement:** The boundary that can reject an invalid action or state.
+
+- **Verification:** The checks that exercise the policies, their interactions, and invariants.
 
 ## The decision graph
 
@@ -438,19 +438,19 @@ A fact with neither a producer nor an external writer is unauthoritative. A fact
 
 The graph must satisfy these mechanical constraints:
 
- 1. Every decision has exactly one output fact.
+1. Every decision has exactly one output fact.
 
- 2. Every derived fact has exactly one producing decision.
+2. Every derived fact has exactly one producing decision.
 
- 3. Every root fact has exactly one authoritative external writer or observer.
+3. Every root fact has exactly one authoritative external writer or observer.
 
- 4. Every input fact reference resolves to an existing fact identity.
+4. Every input fact reference resolves to an existing fact identity.
 
- 5. A decision may not list the same fact as both an unresolved input and its output.
+5. A decision may not list the same fact as both an unresolved input and its output.
 
- 6. Every decision has invariants, an enforcement obligation, and verification obligations, or an explicit schema-approved reason one is not applicable.
+6. Every decision has invariants, an enforcement obligation, and verification obligations, or an explicit schema-approved reason one is not applicable.
 
- 7. Every active decision is indexed, and every active index entry resolves to one decision file.
+7. Every active decision is indexed, and every active index entry resolves to one decision file.
 
 A same-evaluation dependency cycle is invalid because no decision can resolve first:
 
@@ -801,17 +801,3 @@ humans/agents   = maintainers
 ```
 
 The system becomes easier to change because its uncertainties have stable owners, its facts have explicit authorities, and its errors have bounded places to live.
-
-## Note
-
-This document describes the pattern, not one universal implementation.
-
-The exact Markdown syntax, naming convention, generated graph format, search tooling, and implementation-binding strategy may vary. The core constraints should not:
-
-- Each decision resolves one question and produces one authoritative output fact.
-
-- Every fact has one authority: a producing decision or an external writer or observer.
-
-- Policy, invariants, enforcement, and verification form one traceable path that can be reconciled with behavior.
-
-Share this file with an LLM agent and instantiate the smallest version that makes those constraints real for your system.
