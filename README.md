@@ -321,6 +321,9 @@ And the failure modes have addresses:
 - Eligibility correctly ineligible but the reply promises a refund → start at **D002**.
 - The delivery date was wrong → correct the root fact and re-evaluate the affected path.
 
+For a larger example spanning strategy, research, planning, implementation, and change,
+see [Product development: choosing and shipping a product bet](examples/product-development.md).
+
 ## Architecture
 
 A minimal ledger is a directory of schema-constrained Markdown files:
@@ -567,5 +570,3 @@ The more durable insight came from error-correcting systems: unreliable componen
 ## Support
 
 Report reproducible defects through [GitHub Issues](https://github.com/hpark0011/decision-engineering/issues). Use [GitHub Discussions](https://github.com/hpark0011/decision-engineering/discussions) for questions, ideas, and field reports.
-
-## 
