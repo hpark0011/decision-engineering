@@ -321,8 +321,10 @@ And the failure modes have addresses:
 - Eligibility correctly ineligible but the reply promises a refund → start at **D002**.
 - The delivery date was wrong → correct the root fact and re-evaluate the affected path.
 
-For a larger example spanning strategy, research, planning, implementation, and change,
-see [Product development: choosing and shipping a product bet](examples/product-development.md).
+More worked examples:
+
+- [Product development: choosing and shipping a product bet](examples/product-development.md)
+- [Public markets: making and managing an equity investment](examples/public-market-investment.md)
 
 ## Architecture
 
